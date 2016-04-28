@@ -1,0 +1,54 @@
+﻿/// <binding ProjectOpened='dev' />
+const gulp = require('gulp');
+const gutil = require('gulp-util');
+const webpack = require('webpack');
+const config = require('./webpack.config.js');
+
+/**
+  Tailors the baseline webpack config object for the environment.
+  @param {Boolean} dev - True when in development mode, false otherwise.
+  @returns {Object} - The webpack configuration object.
+*/
+function makeWebPackConfig(dev) {
+  config.plugins = config.plugins.filter(function (plugin) {
+    return !(dev && (plugin instanceof webpack.optimize.UglifyJsPlugin)) &&
+      !(dev && (plugin instanceof webpack.DefinePlugin));
+  });
+  config.watch = dev;
+
+  return config;
+}
+
+gulp.task('dev', function (callback) {
+  webpack(makeWebPackConfig(true), function (err, stats) {
+    if (err) {
+      throw new gutil.PluginError('webpack', err);
+    }
+
+    gutil.log('[webpack]', stats.toString({
+      colors: true,
+      chunks: false,
+      hash: false,
+      version: false
+    }));
+
+    // don't invoke callback because it would end the gulp task
+  });
+});
+
+gulp.task('build', function (callback) {
+  webpack(makeWebPackConfig(false), function (err, stats) {
+    if (err) {
+      throw new gutil.PluginError('webpack', err);
+    }
+
+    gutil.log('[webpack]', stats.toString({
+      colors: true,
+      chunks: false,
+      hash: false,
+      version: false
+    }));
+
+    callback();
+  });
+});

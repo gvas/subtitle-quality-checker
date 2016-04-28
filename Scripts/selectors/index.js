@@ -1,0 +1,100 @@
+/*global Set*/
+import { createSelector } from 'reselect'
+import { lengthWithoutCRLF } from '../utils/stringUtils'
+
+const getFileContent = (state) => state.appSpecific.fileContent
+const getSettings = (state) => state.settings
+
+const parseTime = (time) => {
+  const delimiter = /:|,/
+  const [hours, minutes, seconds, milliseconds] = time.split(delimiter)
+  return +hours * 3600000 + +minutes * 60000 + +seconds * 1000 + +milliseconds
+}
+
+export const getTables = createSelector(
+  [getFileContent],
+  fileContent => {
+    let tables = null
+    if (fileContent !== null) {
+      const delimiter = /(?:\r\n|\r|\n){2}(\d+)(?:\r\n|\r|\n)(\d{2}:\d{2}:\d{2},\d{3}) --> (\d{2}:\d{2}:\d{2},\d{3})(?:\r\n|\r|\n)/g
+      const parts = ('\n\n' + fileContent).split(delimiter)
+      if (parts.length > 1) {
+        tables = []
+        for (let i = 1; i < parts.length; i += 4) {
+          tables.push({
+            id: +parts[i],
+            startTimeMs: parseTime(parts[i + 1]),
+            endTimeMs: parseTime(parts[i + 2]),
+            text: parts[i + 3],
+          })
+        }
+      }
+    }
+    return tables
+  }
+)
+
+export const getSubtitleErrors = createSelector(
+  [getSettings, getTables],
+  (settings, tables) => {
+    const errors = {
+      mergeable: [],
+      tooLong: [],
+      moreThanTwoRows: [],
+    }
+
+    if (tables !== null) {
+      for (let i = 0; i < tables.length - 1; i++) {
+        const currentTable = tables[i]
+        const nextTable = tables[i + 1]
+        if (lengthWithoutCRLF(currentTable.text) + lengthWithoutCRLF(nextTable.text) <= settings.maxCharCount.value &&
+          nextTable.startTimeMs - currentTable.endTimeMs < settings.maxPauseMs.value &&
+          nextTable.endTimeMs - currentTable.startTimeMs <= settings.maxDurationMs.value) {
+          errors.mergeable.push(i)
+        }
+        if (lengthWithoutCRLF(currentTable.text) > settings.maxCharCount.value) {
+          errors.tooLong.push(i)
+        }
+        if (currentTable.text.split(/(?:\r\n)|\n|\r/).length > settings.maxRowCount.value) {
+          errors.moreThanTwoRows.push(i)
+        }
+      }
+    }
+
+    return errors
+  }
+)
+
+export const getBadTablesCount = createSelector(
+  [getTables, getSubtitleErrors],
+  (tables, errors) => {
+    if (tables !== null) {
+      const set = new Set()
+      for (let prop in errors) {
+        errors[prop].forEach(index => {
+          set.add(index)
+        })
+      }
+      return set.size;
+    }
+    return null;
+  }
+)
+
+export const getGoodTablesCount = createSelector(
+  [getTables, getBadTablesCount],
+  (tables, badTableCount) => {
+    return (tables !== null)
+      ? tables.length - badTableCount
+      : null
+  }
+)
+
+export const getScore = createSelector(
+  [getTables, getBadTablesCount],
+  (tables, badTableCount) => {
+    return (tables !== null)
+      ? 1 - badTableCount / tables.length
+      : null
+    }
+)

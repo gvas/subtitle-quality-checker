@@ -1,0 +1,74 @@
+import React, { PropTypes } from 'react'
+import { lengthWithoutCRLF, formatTime } from '../utils/stringUtils'
+
+const styles = {
+  list: {
+    width: '100%',
+    margin: 0,
+    padding: '8px 0',
+    fontFamily: 'Roboto, sans-serif',
+    listStyle: 'none',
+  },
+  listItem: {
+    display: 'block',
+    position: 'relative',
+    padding: '16px 16px 12px 16px',
+  },
+  index: {
+    position: 'absolute',
+    left: 16,
+    top: 16,
+    color: 'rgba(0, 0, 0, 0.54)',
+    fontSize: 24,
+    lineHeight: 1,
+  },
+  primaryText: {
+    paddingLeft: 56,
+    color: 'rgba(0, 0, 0, 0.87)',
+    fontSize: 16,
+    lineHeight: 20/16,
+    whiteSpace: 'pre',
+  },
+  secondaryText: {
+    paddingLeft: 56,
+    color: 'rgba(0, 0, 0, 0.54)',
+    fontSize: 14,
+    lineHeight: 20/14,
+  },
+}
+
+const getCps = (startTimeMs, endTimeMs, text) => {
+  const cps = lengthWithoutCRLF(text) / (endTimeMs - startTimeMs) * 1000
+  return cps.toFixed(2)
+}
+
+export default class TablesNarrow extends React.Component {
+
+  static propTypes = {
+    tables: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        startTimeMs: PropTypes.number.isRequired,
+        endTimeMs: PropTypes.number.isRequired,
+        text: PropTypes.string.isRequired,
+      })
+    ).isRequired,
+  }
+
+  render() {
+    return (
+      <ol style={styles.list}>
+      {
+        this.props.tables.map((table, index) => (
+          <li key={index} style={styles.listItem}>
+            <div style={styles.index}>{table.id}</div>
+            <div style={styles.primaryText}>{table.text}</div>
+            <div style={styles.secondaryText}>Kezdet / vég: {formatTime(table.startTimeMs)} - {formatTime(table.endTimeMs) }</div>
+            <div style={styles.secondaryText}>Időtartam: {table.endTimeMs - table.startTimeMs}, Karakterek: {lengthWithoutCRLF(table.text)}, CPS: {getCps(table.startTimeMs, table.endTimeMs, table.text)}</div>
+          </li>
+        ))
+      }
+      </ol>
+    )
+  }
+}
