@@ -1,8 +1,9 @@
-/*global Set*/
+/*global Set, TextDecoder*/
 import { createSelector } from 'reselect'
 import { lengthWithoutCRLF } from '../utils/stringUtils'
 
 const getFileContent = (state) => state.appSpecific.fileContent
+const getEncoding = (state) => state.settings.encoding.value
 const getSettings = (state) => state.settings
 
 const parseTime = (time) => {
@@ -11,13 +12,24 @@ const parseTime = (time) => {
   return +hours * 3600000 + +minutes * 60000 + +seconds * 1000 + +milliseconds
 }
 
-export const getTables = createSelector(
-  [getFileContent],
-  fileContent => {
-    const tables = []
+const getFileContentAsString = createSelector(
+  [getFileContent, getEncoding],
+  (fileContent, encoding) => {
     if (fileContent !== null) {
+      const decoder = new TextDecoder(encoding)
+      return decoder.decode(fileContent)
+    }
+    return null
+  }
+)
+
+export const getTables = createSelector(
+  [getFileContentAsString],
+  fileContentAsString => {
+    const tables = []
+    if (fileContentAsString !== null) {
       const delimiter = /(?:\r\n|\r|\n){2}(\d+)(?:\r\n|\r|\n)(\d{2}:\d{2}:\d{2},\d{3}) --> (\d{2}:\d{2}:\d{2},\d{3})(?:\r\n|\r|\n)/g
-      const parts = ('\n\n' + fileContent).split(delimiter)
+      const parts = ('\n\n' + fileContentAsString).split(delimiter)
       if (parts.length > 1) {
         for (let i = 1; i < parts.length; i += 4) {
           tables.push({

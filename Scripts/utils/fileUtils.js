@@ -12,6 +12,6 @@ export function readFile(file, encoding = 'UTF-8') {
       reject(`${event.name}: ${event.message}`)
     })
 
-    reader.readAsText(file, encoding)
+    reader.readAsArrayBuffer(file, encoding)
   })
 }
