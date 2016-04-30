@@ -1,16 +1,14 @@
 ﻿import React, { PropTypes } from 'react'
+import {withRouter} from 'react-router'
 import Dropzone from 'react-dropzone'
-import merge from 'lodash.merge'
-import {FloatingActionButton} from 'material-ui'
-import Refresh from 'material-ui/lib/svg-icons/navigation/refresh'
-import StatisticsContainer from '../containers/StatisticsContainer'
-import ErrorsContainer from '../containers/ErrorsContainer'
-import TablesContainer from '../containers/TablesContainer'
 
 const styles = {
   dropzone: {
+    fontFamily: 'Roboto, sans-serif',
     textAlign: 'center',
     backgroundColor: '#fafafa',
+    margin: 4,
+    padding: 24,
     border: '1px solid #e5e5e5',
     borderRadius: 3,
     boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.05)',
@@ -19,65 +17,38 @@ const styles = {
 
   },
   svgFont: {
-    fontFamily: 'Robot, sans serif',
+    fontFamily: 'Roboto, sans serif',
     fontSize: 8,
-  },
-  fab: {
-    position: 'fixed',
-    top: 40,
-    right: 24,
-    zIndex: 1200,
-  },
-  deck: {
-    width: 480,
-    display: 'flex',
-    flexFlow: 'row wrap',
-    justifyContent: 'center',
-  },
-  deckMedium: {
-    width: 960,
   },
 }
 
-export default class IndexPage extends React.Component {
+class IndexPage extends React.Component {
 
   static propTypes = {
     greaterThanSmall: PropTypes.bool.isRequired,
-    subtitlesLoaded: PropTypes.bool,
-    score: PropTypes.number,
-    file: PropTypes.object,
+    hasResults: PropTypes.bool.isRequired,
     encoding: PropTypes.string.isRequired,
     readSubtitleAsync: PropTypes.func.isRequired,
+    router: PropTypes.object.isRequired,
+  }
+
+  componentWillMount() {
+    if (this.props.hasResults) {
+      this.props.router.replace('/results')
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.hasResults) {
+      this.props.router.replace('/results')
+    }
   }
 
   onDrop = (files) => {
     this.props.readSubtitleAsync(files[0], this.props.encoding)
   }
 
-  onReload = () => {
-    this.props.readSubtitleAsync(this.props.file, this.props.encoding)
-  }
-
   render() {
-    if (this.props.subtitlesLoaded) {
-      const deckStyle = this.props.greaterThanSmall
-        ? merge({}, styles.deck, styles.deckMedium)
-        : styles.deck
-
-      return (
-        <div>
-          <FloatingActionButton onTouchTap={this.onReload} style={styles.fab}>
-            <Refresh />
-          </FloatingActionButton>
-          <div style={deckStyle}>
-            <StatisticsContainer />
-            <ErrorsContainer />
-            <TablesContainer />
-          </div>
-        </div>
-      )
-    }
-
     return (
       <Dropzone onDrop={this.onDrop} multiple={false} style={styles.dropzone} activeStyle={styles.dropzoneActive}>
         <svg width="48" height="48" viewBox="0 0 24 24">
@@ -92,3 +63,5 @@ export default class IndexPage extends React.Component {
     )
   }
 }
+
+export default withRouter(IndexPage)

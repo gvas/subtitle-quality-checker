@@ -8,7 +8,7 @@ const mapStateToProps = (state, props) => {
     score: getScore(state),
     goodTablesCount: getGoodTablesCount(state),
     badTablesCount: getBadTablesCount(state),
-    fileName: state.appSpecific.file.name,
+    fileName: state.appSpecific.file === null ? null : state.appSpecific.file.name,
     responsiveState: state.browser,
   }
 }

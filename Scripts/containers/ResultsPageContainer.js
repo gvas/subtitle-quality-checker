@@ -1,21 +1,20 @@
 import { connect } from 'react-redux'
 import { readSubtitleAsync } from '../actions/index'
-import IndexPage from '../components/IndexPage'
+import ResultsPage from '../components/ResultsPage'
 import { getTables } from '../selectors'
 
 const mapStateToProps = (state) => ({
   greaterThanSmall: state.browser.greaterThan.small,
   hasResults: getTables(state).length !== 0,
-  encoding: state.settings.encoding.value,
 })
 
 const mapDispatchToProps = {
   readSubtitleAsync,
 }
 
-const IndexPageContainer = connect(
+const ResultsPageContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(IndexPage)
+)(ResultsPage)
 
-export default IndexPageContainer
+export default ResultsPageContainer

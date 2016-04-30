@@ -1,11 +1,9 @@
 import { connect } from 'react-redux'
 import { readSubtitleAsync } from '../actions/index'
-import IndexPage from '../components/IndexPage'
-import { getTables } from '../selectors'
+import FloatingActionButtonMenu from '../components/FloatingActionButtonMenu'
 
 const mapStateToProps = (state) => ({
-  greaterThanSmall: state.browser.greaterThan.small,
-  hasResults: getTables(state).length !== 0,
+  file: state.appSpecific.file,
   encoding: state.settings.encoding.value,
 })
 
@@ -13,9 +11,9 @@ const mapDispatchToProps = {
   readSubtitleAsync,
 }
 
-const IndexPageContainer = connect(
+const FloatingActionButtonMenuContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(IndexPage)
+)(FloatingActionButtonMenu)
 
-export default IndexPageContainer
+export default FloatingActionButtonMenuContainer

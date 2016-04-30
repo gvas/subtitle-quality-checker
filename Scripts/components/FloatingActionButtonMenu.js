@@ -1,0 +1,59 @@
+import React, { PropTypes } from 'react'
+import {FloatingActionButton} from 'material-ui'
+import Refresh from 'material-ui/lib/svg-icons/navigation/refresh'
+import {withRouter} from 'react-router'
+import FileInputFab from './FileInputFab'
+
+const styles = {
+  list: {
+    position: 'fixed',
+    top: 36,
+    right: 24,
+    zIndex: 1200,
+    padding: 0,
+    margin: 0,
+    listStyle: 'none',
+  },
+  listItem: {
+    margin: 0,
+    padding: '0 0 16px 0',
+    textAlign: 'center',
+  },
+}
+
+class FloatingActionButtonMenu extends React.Component {
+
+  static propTypes = {
+    file: PropTypes.object,
+    encoding: PropTypes.string.isRequired,
+    readSubtitleAsync: PropTypes.func.isRequired,
+    router: PropTypes.object.isRequired,
+  }
+
+  onLoad = (event) => {
+    event.preventDefault()
+    const file = event.target.files[0]
+    this.props.readSubtitleAsync(file, this.props.encoding)
+  }
+
+  onReload = () => {
+    this.props.readSubtitleAsync(this.props.file, this.props.encoding)
+  }
+
+  render() {
+    return (
+      <ol style={styles.list}>
+        <li style={styles.listItem}>
+          <FloatingActionButton onTouchTap={this.onReload}>
+            <Refresh />
+          </FloatingActionButton>
+        </li>
+        <li style={styles.listItem}>
+          <FileInputFab onLoad={this.onLoad} />
+        </li>
+      </ol>
+    )
+  }
+}
+
+export default withRouter(FloatingActionButtonMenu)
