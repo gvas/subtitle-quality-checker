@@ -12,10 +12,13 @@ const shell = require('gulp-shell')
   @returns {Object} - The webpack configuration object.
 */
 function makeWebPackConfig(dev) {
-  config.plugins = config.plugins.filter(function (plugin) {
-    return !(dev && (plugin instanceof webpack.optimize.UglifyJsPlugin)) &&
-      !(dev && (plugin instanceof webpack.DefinePlugin))
-  })
+  if (dev) {
+    config.plugins = config.plugins.filter(function (plugin) {
+      return !(plugin instanceof webpack.optimize.UglifyJsPlugin) &&
+        !(plugin instanceof webpack.DefinePlugin)
+    })
+  }
+
   config.watch = dev
 
   return config;
