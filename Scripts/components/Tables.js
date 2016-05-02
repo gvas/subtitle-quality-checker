@@ -104,7 +104,7 @@ export default class Tables extends React.Component {
           </div>
         </div>
         {
-          this.props.responsiveState.greaterThan.xsmall
+          this.props.responsiveState.greaterThan.small
             ? <TablesWide tables={this.props.filteredTables} />
             : <TablesNarrow tables={this.props.filteredTables} />
         }

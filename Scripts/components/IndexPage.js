@@ -6,15 +6,13 @@ const styles = {
   dropzone: {
     fontFamily: 'Roboto, sans-serif',
     textAlign: 'center',
-    backgroundColor: '#fafafa',
+    backgroundColor: '#ffffff',
     margin: 4,
     padding: 24,
     border: '1px solid #e5e5e5',
     borderRadius: 3,
     boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.05)',
-  },
-  dropzoneActive: {
-
+    cursor: 'pointer',
   },
   svgFont: {
     fontFamily: 'Roboto, sans serif',
@@ -50,7 +48,7 @@ class IndexPage extends React.Component {
 
   render() {
     return (
-      <Dropzone onDrop={this.onDrop} multiple={false} style={styles.dropzone} activeStyle={styles.dropzoneActive}>
+      <Dropzone onDrop={this.onDrop} multiple={false} style={styles.dropzone}>
         <svg width="48" height="48" viewBox="0 0 24 24">
           <path stroke="#000000" fill="transparent" d="M6 2c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6H6z"/>
           <text fill="black" x="7" y="14" style={styles.svgFont}>srt</text>
