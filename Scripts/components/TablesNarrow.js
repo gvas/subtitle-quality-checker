@@ -59,8 +59,8 @@ export default class TablesNarrow extends React.Component {
     return (
       <ol style={styles.list}>
       {
-        this.props.tables.map((table, index) => (
-          <li key={index} style={styles.listItem}>
+        this.props.tables.map((table) => (
+          <li key={table.id} style={styles.listItem}>
             <div style={styles.index}>{table.id}</div>
             <div style={styles.primaryText}>{table.text}</div>
             <div style={styles.secondaryText}>Kezdet / vég: {formatTime(table.startTimeMs)} - {formatTime(table.endTimeMs) }</div>

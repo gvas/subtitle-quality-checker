@@ -83,8 +83,8 @@ export default class TablesWide extends React.Component {
         </thead>
         <tbody>
           {
-            this.props.tables.map((table, index) => (
-              <tr key={index}>
+            this.props.tables.map((table) => (
+              <tr key={table.id}>
                 <td style={firstNumericCell}>{table.id}</td>
                 <td style={numericCell}>{formatTime(table.startTimeMs)}<br/>{formatTime(table.endTimeMs) }</td>
                 <td style={numericCell}>{table.endTimeMs - table.startTimeMs}</td>

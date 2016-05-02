@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import {Card, CardText} from 'material-ui'
 import merge from 'lodash.merge'
+import errorTypes from './errorTypes'
 
 const styles = {
   card: {
@@ -51,10 +52,21 @@ const styles = {
   },
 }
 
+const descriptions = {
+  [errorTypes.MERGEABLE]: 'Összevonható a következővel',
+  [errorTypes.TOO_LONG_ROWS]: 'Túl hosszú sorok',
+  [errorTypes.TOO_MANY_CHARACTERS]: 'Túl sok karakter',
+  [errorTypes.TOO_MANY_ROWS]: 'Túl sok sor',
+  [errorTypes.TOO_LONG_DURATION]: 'Túl hosszú időtartam',
+}
+
 export default class Errors extends React.Component {
 
   static propTypes = {
-    errors: PropTypes.object.isRequired,
+    errors: PropTypes.arrayOf(PropTypes.shape({
+      errorType: PropTypes.string.isRequired,
+      count: PropTypes.number.isRequired,
+    })).isRequired,
     greaterThanSmall: PropTypes.bool.isRequired,
   }
 
@@ -69,22 +81,18 @@ export default class Errors extends React.Component {
       ? merge({}, styles.list, styles.listMedium)
       : styles.list
 
+    const listItems = this.props.errors.map(error => (
+        <div key={error.errorType} style={styles.listItem}>
+          <span style={styles.errorCount}>{error.count}</span>
+          <span style={styles.errorDescription}>{descriptions[error.errorType]}</span>
+        </div>
+    ))
+
     return (
       <Card style={cardStyle}>
         <h2 style={titleStyle}>Hibák</h2>
         <CardText style={listStyle}>
-          <div style={styles.listItem}>
-            <span style={styles.errorCount}>{this.props.errors.mergeable.length}</span>
-            <span style={styles.errorDescription}>Összevonható a következő táblával.</span>
-          </div>
-          <div style={styles.listItem}>
-            <span style={styles.errorCount}>{this.props.errors.tooLong.length}</span>
-            <span style={styles.errorDescription}>Túl hosszú sorok.</span>
-          </div>
-          <div style={styles.listItem}>
-            <span style={styles.errorCount}>{this.props.errors.moreThanTwoRows.length}</span>
-            <span style={styles.errorDescription}>Kettőnél több sor.</span>
-          </div>
+          {listItems}
         </CardText>
       </Card>
     )

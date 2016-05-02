@@ -13,6 +13,10 @@ export const types = {
   CHANGE_ENCODING: 'CHANGE_ENCODING',
   ROLLBACK_ENCODING: 'ROLLBACK_ENCODING',
   SUBMIT_ENCODING: 'SUBMIT_ENCODING',
+  OPEN_MAX_ROW_LENGTH_EDITOR: 'OPEN_MAX_ROW_LENGTH_EDITOR',
+  CHANGE_MAX_ROW_LENGTH: 'CHANGE_MAX_ROW_LENGTH',
+  ROLLBACK_MAX_ROW_LENGTH: 'ROLLBACK_MAX_ROW_LENGTH',
+  SUBMIT_MAX_ROW_LENGTH: 'SUBMIT_MAX_ROW_LENGTH',
   OPEN_MAX_ROW_COUNT_EDITOR: 'OPEN_MAX_ROW_COUNT_EDITOR',
   CHANGE_MAX_ROW_COUNT: 'CHANGE_MAX_ROW_COUNT',
   ROLLBACK_MAX_ROW_COUNT: 'ROLLBACK_MAX_ROW_COUNT',
@@ -29,6 +33,7 @@ export const types = {
   CHANGE_MAX_PAUSE_MS: 'CHANGE_MAX_PAUSE_MS',
   ROLLBACK_MAX_PAUSE_MS: 'ROLLBACK_MAX_PAUSE_MS',
   SUBMIT_MAX_PAUSE_MS: 'SUBMIT_MAX_PAUSE_MS',
+  TOGGLE_FILTER: 'TOGGLE_FILTER',
 }
 
 export function calculateResponsiveState() {
@@ -99,6 +104,23 @@ export const submitEncoding = () => ({
   type: types.SUBMIT_ENCODING,
 })
 
+export const openMaxRowLengthEditor = () => ({
+  type: types.OPEN_MAX_ROW_LENGTH_EDITOR,
+})
+
+export const changeMaxRowLength = (maxRowLength) => ({
+  type: types.CHANGE_MAX_ROW_LENGTH,
+  payload: maxRowLength,
+})
+
+export const rollbackMaxRowLength = () => ({
+  type: types.ROLLBACK_MAX_ROW_LENGTH,
+})
+
+export const submitMaxRowLength = () => ({
+  type: types.SUBMIT_MAX_ROW_LENGTH,
+})
+
 export const openMaxRowCountEditor = () => ({
   type: types.OPEN_MAX_ROW_COUNT_EDITOR,
 })
@@ -165,4 +187,9 @@ export const rollbackMaxPauseMs = () => ({
 
 export const submitMaxPauseMs = () => ({
   type: types.SUBMIT_MAX_PAUSE_MS,
+})
+
+export const toggleFilter = (errorType) => ({
+  type: types.TOGGLE_FILTER,
+  payload: errorType,
 })

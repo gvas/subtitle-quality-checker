@@ -16,10 +16,7 @@ namespace SubtitleEvalution.Web.Controllers
         [Route("results")]
         public IActionResult Results()
         {
-            return View("js-{auto}", new SubtitleEvaluation.Web.ViewModels.Home.Results
-            {
-                UserAgent = Request.Headers["User-Agent"]
-            });
+            return RedirectToAction("Index");
         }
 
         [Route("settings")]

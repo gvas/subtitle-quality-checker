@@ -4,6 +4,7 @@ import ContentFilter from 'material-ui/lib/svg-icons/content/filter-list'
 import merge from 'lodash.merge'
 import TablesNarrow from './TablesNarrow'
 import TablesWide from './TablesWide'
+import errorTypes from './errorTypes'
 
 const styles = {
   card: {
@@ -14,6 +15,7 @@ const styles = {
   toolbar: {
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
     height: 64,
     margin: 0,
     padding: '0 16px',
@@ -34,12 +36,24 @@ const styles = {
     margin: 0,
     padding: 0,
   },
+  filterMenuItem: {
+    paddingLeft: 72,
+  },
+}
+
+const labels = {
+  [errorTypes.NO_PROBLEM]: 'Problémamentes',
+  [errorTypes.MERGEABLE]: 'Összevonható a következővel',
+  [errorTypes.TOO_LONG_ROWS]: 'Túl hosszú sorok',
+  [errorTypes.TOO_MANY_CHARACTERS]: 'Túl sok karakter',
+  [errorTypes.TOO_MANY_ROWS]: 'Túl sok sor',
+  [errorTypes.TOO_LONG_DURATION]: 'Túl hosszú időtartam',
 }
 
 export default class Tables extends React.Component {
 
   static propTypes = {
-    tables: PropTypes.arrayOf(
+    filteredTables: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number.isRequired,
         startTimeMs: PropTypes.number.isRequired,
@@ -47,13 +61,31 @@ export default class Tables extends React.Component {
         text: PropTypes.string.isRequired,
       })
     ).isRequired,
+    filters: PropTypes.arrayOf(PropTypes.shape({
+      errorType: PropTypes.string.isRequired,
+      checked: PropTypes.bool.isRequired,
+    })).isRequired,
     responsiveState: PropTypes.object.isRequired,
+    toggleFilter: PropTypes.func.isRequired,
+  }
+
+  onToggleItem = (el, menuItem) => {
+    this.props.toggleFilter(menuItem.props.value)
   }
 
   render() {
     const toolbarStyle = this.props.responsiveState.greaterThan.xsmall
       ? merge({}, styles.toolbar, styles.toolbarSmall)
       : styles.toolbar
+
+    const listItems = this.props.filters.map(filter => (
+      <MenuItem
+        key={filter.errorType}
+        value={filter.errorType}
+        primaryText={labels[filter.errorType]}
+        checked={filter.checked}
+        innerDivStyle={styles.filterMenuItem} />
+    ))
 
     return (
       <Card style={styles.card}>
@@ -65,18 +97,16 @@ export default class Tables extends React.Component {
             <IconMenu
               anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
               targetOrigin={{ vertical: 'top', horizontal: 'right' }}
-              iconButtonElement={<IconButton><ContentFilter /></IconButton>}>
-              <MenuItem value="1" primaryText="Problémamentes tábla" />
-              <MenuItem value="2" primaryText="Összevonható a következő táblával" />
-              <MenuItem value="3" primaryText="Túl hosszú sorok" />
-              <MenuItem value="4" primaryText="Kettőnél több sor" />
+              iconButtonElement={<IconButton><ContentFilter /></IconButton>}
+              onItemTouchTap={this.onToggleItem}>
+              {listItems}
             </IconMenu>
           </div>
         </div>
         {
           this.props.responsiveState.greaterThan.xsmall
-            ? <TablesWide tables={this.props.tables} />
-            : <TablesNarrow tables={this.props.tables} />
+            ? <TablesWide tables={this.props.filteredTables} />
+            : <TablesNarrow tables={this.props.filteredTables} />
         }
       </Card>
     )

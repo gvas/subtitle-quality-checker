@@ -1,10 +1,12 @@
-/*global Set, TextDecoder*/
+/*global TextDecoder*/
 import { createSelector } from 'reselect'
 import { lengthWithoutCRLF } from '../utils/stringUtils'
+import errorTypes from '../components/errorTypes'
 
 const getFileContent = (state) => state.appSpecific.fileContent
 const getEncoding = (state) => state.settings.encoding.value
 const getSettings = (state) => state.settings
+const getFilters = (state) => state.filters
 
 const parseTime = (time) => {
   const delimiter = /:|,/
@@ -23,9 +25,41 @@ const getFileContentAsString = createSelector(
   }
 )
 
+const evaluateTables = (settings, tables) => {
+  for (let i = 0; i < tables.length; i++) {
+    const currentTable = tables[i]
+    const nextTable = i === tables.length - 1 ? null : tables[i + 1]
+
+    currentTable.errors[errorTypes.MERGEABLE] =
+      (nextTable !== null &&
+        lengthWithoutCRLF(currentTable.text) + lengthWithoutCRLF(nextTable.text) <= settings.maxCharCount.value &&
+        nextTable.startTimeMs - currentTable.endTimeMs < settings.maxPauseMs.value &&
+        nextTable.endTimeMs - currentTable.startTimeMs <= settings.maxDurationMs.value)
+
+    currentTable.errors[errorTypes.TOO_LONG_ROWS] =
+      (currentTable.text.split(/(?:\r\n)|\n|\r/).some(row => row.length > settings.maxRowLength))
+
+    currentTable.errors[errorTypes.TOO_MANY_CHARACTERS] =
+      (lengthWithoutCRLF(currentTable.text) > settings.maxCharCount.value)
+
+    currentTable.errors[errorTypes.TOO_MANY_ROWS] =
+      (currentTable.text.split(/(?:\r\n)|\n|\r/).length > settings.maxRowCount.value)
+
+    currentTable.errors[errorTypes.TOO_LONG_DURATION] =
+      (currentTable.endTimeMs - currentTable.startTimeMs > settings.maxDurationMs)
+
+    currentTable.errors[errorTypes.NO_PROBLEM] =
+      !currentTable.errors[errorTypes.TOO_LONG_ROWS] &&
+      !currentTable.errors[errorTypes.MERGEABLE] &&
+      !currentTable.errors[errorTypes.TOO_MANY_CHARACTERS] &&
+      !currentTable.errors[errorTypes.TOO_MANY_ROWS] &&
+      !currentTable.errors[errorTypes.TOO_LONG_DURATION]
+  }
+}
+
 export const getTables = createSelector(
-  [getFileContentAsString],
-  fileContentAsString => {
+  [getSettings, getFileContentAsString],
+  (settings, fileContentAsString) => {
     const tables = []
     if (fileContentAsString !== null) {
       const delimiter = /(?:\r\n|\r|\n){2}(\d+)(?:\r\n|\r|\n)(\d{2}:\d{2}:\d{2},\d{3}) --> (\d{2}:\d{2}:\d{2},\d{3})(?:\r\n|\r|\n)/g
@@ -37,36 +71,46 @@ export const getTables = createSelector(
             startTimeMs: parseTime(parts[i + 1]),
             endTimeMs: parseTime(parts[i + 2]),
             text: parts[i + 3],
+            errors: {},
           })
         }
+        // remove the newline characters from the end of the last table
+        tables[tables.length - 1].text = tables[tables.length - 1].text.replace(/(?:\r\n|\r|\n)*$/, '')
+
+        evaluateTables(settings, tables)
       }
     }
     return tables
   }
 )
 
+export const getFilteredTables = createSelector(
+  [getFilters, getTables],
+  (filters, tables) => {
+    const checkedErrorTypes = []
+    for (let errorType in filters) {
+      if (filters[errorType]) {
+        checkedErrorTypes.push(errorType)
+      }
+    }
+    return tables.filter(table => checkedErrorTypes.some(errorType => table.errors[errorType]))
+  }
+)
+
 export const getSubtitleErrors = createSelector(
-  [getSettings, getTables],
-  (settings, tables) => {
-    const errors = {
-      mergeable: [],
-      tooLong: [],
-      moreThanTwoRows: [],
+  [getTables],
+  tables => {
+    const errors = {}
+
+    for (let errorType in errorTypes) {
+      errors[errorType] = 0
     }
 
-    for (let i = 0; i < tables.length - 1; i++) {
-      const currentTable = tables[i]
-      const nextTable = tables[i + 1]
-      if (lengthWithoutCRLF(currentTable.text) + lengthWithoutCRLF(nextTable.text) <= settings.maxCharCount.value &&
-        nextTable.startTimeMs - currentTable.endTimeMs < settings.maxPauseMs.value &&
-        nextTable.endTimeMs - currentTable.startTimeMs <= settings.maxDurationMs.value) {
-        errors.mergeable.push(i)
-      }
-      if (lengthWithoutCRLF(currentTable.text) > settings.maxCharCount.value) {
-        errors.tooLong.push(i)
-      }
-      if (currentTable.text.split(/(?:\r\n)|\n|\r/).length > settings.maxRowCount.value) {
-        errors.moreThanTwoRows.push(i)
+    for (let i = 0; i < tables.length; i++) {
+      for (let errorType in errorTypes) {
+        if (tables[i].errors[errorType]) {
+          errors[errorType] += 1
+        }
       }
     }
 
@@ -74,22 +118,14 @@ export const getSubtitleErrors = createSelector(
   }
 )
 
-export const getBadTablesCount = createSelector(
-  [getTables, getSubtitleErrors],
-  (tables, errors) => {
-    const set = new Set()
-    for (let prop in errors) {
-      errors[prop].forEach(index => {
-        set.add(index)
-      })
-    }
-    return set.size;
-  }
+export const getGoodTablesCount = createSelector(
+  [getSubtitleErrors],
+  errors => errors[errorTypes.NO_PROBLEM]
 )
 
-export const getGoodTablesCount = createSelector(
-  [getTables, getBadTablesCount],
-  (tables, badTableCount) => tables.length - badTableCount
+export const getBadTablesCount = createSelector(
+  [getTables, getGoodTablesCount],
+  (tables, goodTableCount) => tables.length - goodTableCount
 )
 
 export const getScore = createSelector(
