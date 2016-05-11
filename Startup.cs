@@ -8,6 +8,7 @@ using SubtitleEvalution.Web.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.Extensions.Configuration;
 
 namespace SubtitleEvalution.Web
 {
@@ -19,12 +20,19 @@ namespace SubtitleEvalution.Web
         {
             webRootPath = hostingEnvironment.WebRootPath;
 
+            Configuration = new ConfigurationBuilder()
+              .AddEnvironmentVariables()
+              .Build();
+
             VroomJs.AssemblyLoader.EnsureLoaded();
         }
+
+        private IConfigurationRoot Configuration { get; set; }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
             services.AddJsEngine<ReactEnvironmentInitializer>();
             services.Configure<JsPoolOptions>(options =>
             {
@@ -35,17 +43,40 @@ namespace SubtitleEvalution.Web
                 };
                 options.WatchDebounceTimeout = (int)TimeSpan.FromSeconds(2).TotalMilliseconds;
             });
+
+            services
+              .AddOptions()
+              .Configure<HostingOptions>(Configuration);
+        }
+
+        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IHostingEnvironment env)
+        {
+            var virtualPath = Environment.GetEnvironmentVariable("VirtualApplicationRootPath");
+
+            if (!string.IsNullOrEmpty(virtualPath) && virtualPath != "/")
+            {
+                // workaround for bug in hosting app in IIS virtual directory https://github.com/aspnet/IISIntegration/issues/14#issuecomment-190574696
+                app.Map(virtualPath, (app1) => this.Configure1(app1, loggerFactory, env));
+            }
+            else
+            {
+                this.Configure1(app, loggerFactory, env);
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
+        public void Configure1(IApplicationBuilder app, ILoggerFactory loggerFactory, IHostingEnvironment env)
         {
             loggerFactory
                 .AddConsole()
                 .AddDebug();
 
-            app
-                .UseIISPlatformHandler()
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.UseIISPlatformHandler()
                 .UseStaticFiles()
                 .UseJsEngine(); // Gives a js engine to each request.
 

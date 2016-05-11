@@ -12,7 +12,10 @@ export function RenderView(path, model) {
     status: 404,
     redirect: null,
   }
-  const memoryHistory = createMemoryHistory(path)
+  const memoryHistory = createMemoryHistory({
+    basename: model.VirtualApplicationRootPath,
+    entries: [path],
+  })
   const store = configureStore(memoryHistory)
   const history = syncHistoryWithStore(memoryHistory, store)
 
@@ -33,14 +36,14 @@ export function RenderView(path, model) {
         </Provider>
       )
       result.status = 200
-      result.html = renderPage(appHtml)
+      result.html = renderPage(appHtml, model.VirtualApplicationRootPath)
     }
   });
 
   return result;
 }
 
-function renderPage(appHtml) {
+function renderPage(appHtml, virtualApplicationRootPath) {
   return `
     <!doctype html>
     <html>
@@ -61,8 +64,9 @@ function renderPage(appHtml) {
 
       <div id="app">${appHtml}</div>
 
-      <script src="/vendors.bundle.js"></script>
-      <script src="/client.bundle.js"></script>
+      <script>var INITIAL_STATE = { virtualApplicationRootPath: "${virtualApplicationRootPath}" }</script>
+      <script src="${virtualApplicationRootPath.slice(-1) === '/' ? virtualApplicationRootPath : virtualApplicationRootPath + '/'}vendors.bundle.js"></script>
+      <script src="${virtualApplicationRootPath.slice(-1) === '/' ? virtualApplicationRootPath : virtualApplicationRootPath + '/'}client.bundle.js"></script>
     </body>
     </html>
   `
