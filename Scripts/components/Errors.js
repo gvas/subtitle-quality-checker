@@ -57,7 +57,11 @@ const descriptions = {
   [errorTypes.TOO_LONG_ROWS]: 'Túl hosszú sorok',
   [errorTypes.TOO_MANY_CHARACTERS]: 'Túl sok karakter',
   [errorTypes.TOO_MANY_ROWS]: 'Túl sok sor',
+  [errorTypes.TOO_SHORT_DURATION]: 'Túl rövid időtartam',
   [errorTypes.TOO_LONG_DURATION]: 'Túl hosszú időtartam',
+  [errorTypes.TOO_LITTLE_CPS]: 'Túl kicsi CPS',
+  [errorTypes.TOO_BIG_CPS]: 'Túl nagy CPS',
+  [errorTypes.TOO_SHORT_PAUSE]: 'Túl rövid szünet utána',
 }
 
 export default class Errors extends React.Component {

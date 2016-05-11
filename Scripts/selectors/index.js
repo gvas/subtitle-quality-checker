@@ -29,15 +29,18 @@ const evaluateTables = (settings, tables) => {
   for (let i = 0; i < tables.length; i++) {
     const currentTable = tables[i]
     const nextTable = i === tables.length - 1 ? null : tables[i + 1]
+    const currentTableLengthWithoutCRLF = lengthWithoutCRLF(currentTable.text)
+    const nextTableLengthWithoutCRLF = i === tables.length - 1 ? null : lengthWithoutCRLF(nextTable.text)
+    const currentTableDurationMs = currentTable.endTimeMs - currentTable.startTimeMs
 
     currentTable.errors[errorTypes.MERGEABLE] =
       (nextTable !== null &&
-        lengthWithoutCRLF(currentTable.text) + lengthWithoutCRLF(nextTable.text) <= settings.maxCharCount.value &&
+        currentTableLengthWithoutCRLF + nextTableLengthWithoutCRLF <= settings.maxCharCount.value &&
         nextTable.startTimeMs - currentTable.endTimeMs < settings.maxPauseMs.value &&
         nextTable.endTimeMs - currentTable.startTimeMs <= settings.maxDurationMs.value)
 
     currentTable.errors[errorTypes.TOO_LONG_ROWS] =
-      (currentTable.text.split(/(?:\r\n)|\n|\r/).some(row => row.length > settings.maxRowLength))
+      (currentTable.text.split(/(?:\r\n)|\n|\r/).some(row => row.length > settings.maxRowLength.value))
 
     currentTable.errors[errorTypes.TOO_MANY_CHARACTERS] =
       (lengthWithoutCRLF(currentTable.text) > settings.maxCharCount.value)
@@ -45,15 +48,32 @@ const evaluateTables = (settings, tables) => {
     currentTable.errors[errorTypes.TOO_MANY_ROWS] =
       (currentTable.text.split(/(?:\r\n)|\n|\r/).length > settings.maxRowCount.value)
 
+    currentTable.errors[errorTypes.TOO_SHORT_DURATION] =
+      (currentTableDurationMs < settings.minDurationMs.value)
+
     currentTable.errors[errorTypes.TOO_LONG_DURATION] =
-      (currentTable.endTimeMs - currentTable.startTimeMs > settings.maxDurationMs)
+      (currentTableDurationMs > settings.maxDurationMs.value)
+
+    currentTable.errors[errorTypes.TOO_LITTLE_CPS] =
+      (currentTableLengthWithoutCRLF * 1000 / currentTableDurationMs < settings.minCps.value)
+
+    currentTable.errors[errorTypes.TOO_BIG_CPS] =
+      (currentTableLengthWithoutCRLF * 1000 / currentTableDurationMs > settings.maxCps.value)
+
+    currentTable.errors[errorTypes.TOO_SHORT_PAUSE] =
+      (nextTable !== null &&
+        nextTable.startTimeMs - currentTable.endTimeMs < settings.minPauseMs.value)
 
     currentTable.errors[errorTypes.NO_PROBLEM] =
       !currentTable.errors[errorTypes.TOO_LONG_ROWS] &&
       !currentTable.errors[errorTypes.MERGEABLE] &&
       !currentTable.errors[errorTypes.TOO_MANY_CHARACTERS] &&
       !currentTable.errors[errorTypes.TOO_MANY_ROWS] &&
-      !currentTable.errors[errorTypes.TOO_LONG_DURATION]
+      !currentTable.errors[errorTypes.TOO_SHORT_DURATION] &&
+      !currentTable.errors[errorTypes.TOO_LONG_DURATION] &&
+      !currentTable.errors[errorTypes.TOO_LITTLE_CPS] &&
+      !currentTable.errors[errorTypes.TOO_BIG_CPS] &&
+      !currentTable.errors[errorTypes.TOO_SHORT_PAUSE]
   }
 }
 

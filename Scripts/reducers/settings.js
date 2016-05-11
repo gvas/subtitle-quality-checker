@@ -5,6 +5,10 @@ import maxRowCount from './maxRowCount'
 import maxCharCount from './maxCharCount'
 import maxDurationMs from './maxDurationMs'
 import maxPauseMs from './maxPauseMs'
+import minCps from './minCps'
+import maxCps from './maxCps'
+import minPauseMs from './minPauseMs'
+import minDurationMs from './minDurationMs'
 
 const settings = combineReducers({
   encoding,
@@ -13,6 +17,10 @@ const settings = combineReducers({
   maxCharCount,
   maxDurationMs,
   maxPauseMs,
+  minCps,
+  maxCps,
+  minPauseMs,
+  minDurationMs,
 })
 
 export default settings

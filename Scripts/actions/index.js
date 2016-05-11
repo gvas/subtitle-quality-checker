@@ -33,6 +33,22 @@ export const types = {
   CHANGE_MAX_PAUSE_MS: 'CHANGE_MAX_PAUSE_MS',
   ROLLBACK_MAX_PAUSE_MS: 'ROLLBACK_MAX_PAUSE_MS',
   SUBMIT_MAX_PAUSE_MS: 'SUBMIT_MAX_PAUSE_MS',
+  OPEN_MIN_CPS_EDITOR: 'OPEN_MIN_CPS_EDITOR',
+  CHANGE_MIN_CPS: 'CHANGE_MIN_CPS',
+  ROLLBACK_MIN_CPS: 'ROLLBACK_MIN_CPS',
+  SUBMIT_MIN_CPS: 'SUBMIT_MIN_CPS',
+  OPEN_MAX_CPS_EDITOR: 'OPEN_MAX_CPS_EDITOR',
+  CHANGE_MAX_CPS: 'CHANGE_MAX_CPS',
+  ROLLBACK_MAX_CPS: 'ROLLBACK_MAX_CPS',
+  SUBMIT_MAX_CPS: 'SUBMIT_MAX_CPS',
+  OPEN_MIN_PAUSE_MS_EDITOR: 'OPEN_MIN_PAUSE_MS_EDITOR',
+  CHANGE_MIN_PAUSE_MS: 'CHANGE_MIN_PAUSE_MS',
+  ROLLBACK_MIN_PAUSE_MS: 'ROLLBACK_MIN_PAUSE_MS',
+  SUBMIT_MIN_PAUSE_MS: 'SUBMIT_MIN_PAUSE_MS',
+  OPEN_MIN_DURATION_MS_EDITOR: 'OPEN_MIN_DURATION_MS_EDITOR',
+  CHANGE_MIN_DURATION_MS: 'CHANGE_MIN_DURATION_MS',
+  ROLLBACK_MIN_DURATION_MS: 'ROLLBACK_MIN_DURATION_MS',
+  SUBMIT_MIN_DURATION_MS: 'SUBMIT_MIN_DURATION_MS',
   TOGGLE_FILTER: 'TOGGLE_FILTER',
 }
 
@@ -187,6 +203,74 @@ export const rollbackMaxPauseMs = () => ({
 
 export const submitMaxPauseMs = () => ({
   type: types.SUBMIT_MAX_PAUSE_MS,
+})
+
+export const openMinCpsEditor = () => ({
+  type: types.OPEN_MIN_CPS_EDITOR,
+})
+
+export const changeMinCps = (minCps) => ({
+  type: types.CHANGE_MIN_CPS,
+  payload: minCps,
+})
+
+export const rollbackMinCps = () => ({
+  type: types.ROLLBACK_MIN_CPS,
+})
+
+export const submitMinCps = () => ({
+  type: types.SUBMIT_MIN_CPS,
+})
+
+export const openMaxCpsEditor = () => ({
+  type: types.OPEN_MAX_CPS_EDITOR,
+})
+
+export const changeMaxCps = (minCps) => ({
+  type: types.CHANGE_MAX_CPS,
+  payload: minCps,
+})
+
+export const rollbackMaxCps = () => ({
+  type: types.ROLLBACK_MAX_CPS,
+})
+
+export const submitMaxCps = () => ({
+  type: types.SUBMIT_MAX_CPS,
+})
+
+export const openMinPauseMsEditor = () => ({
+  type: types.OPEN_MIN_PAUSE_MS_EDITOR,
+})
+
+export const changeMinPauseMs = (minPauseMs) => ({
+  type: types.CHANGE_MIN_PAUSE_MS,
+  payload: minPauseMs,
+})
+
+export const rollbackMinPauseMs = () => ({
+  type: types.ROLLBACK_MIN_PAUSE_MS,
+})
+
+export const submitMinPauseMs = () => ({
+  type: types.SUBMIT_MIN_PAUSE_MS,
+})
+
+export const openMinDurationMsEditor = () => ({
+  type: types.OPEN_MIN_DURATION_MS_EDITOR,
+})
+
+export const changeMinDurationMs = (minDurationMs) => ({
+  type: types.CHANGE_MIN_DURATION_MS,
+  payload: minDurationMs,
+})
+
+export const rollbackMinDurationMs = () => ({
+  type: types.ROLLBACK_MIN_DURATION_MS,
+})
+
+export const submitMinDurationMs = () => ({
+  type: types.SUBMIT_MIN_DURATION_MS,
 })
 
 export const toggleFilter = (errorType) => ({
