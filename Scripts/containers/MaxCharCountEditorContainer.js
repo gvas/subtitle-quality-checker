@@ -1,13 +1,15 @@
 import { connect } from 'react-redux'
-import { changeMaxCharCount, rollbackMaxCharCount, submitMaxCharCount } from '../actions'
+import { changeMaxCharCount, rollbackMaxCharCount, submitMaxCharCount } from '../actions/index'
 import NumericalSettingEditor from '../components/NumericalSettingEditor'
 
 const mapStateToProps = (state) => {
+  const t = state.settings.localization.translations
+  const setting = state.settings.maxCharCount
   return {
-    label: 'Felirattáblák maximális hossza (karakter)',
-    errorText: state.settings.maxCharCount.editor.errorText,
-    isOpen: state.settings.maxCharCount.editor.isOpen,
-    value: state.settings.maxCharCount.editor.value,
+    label: t.translate('app.settingsPage.maxCharCount'),
+    errorText: setting.validationError === null ? null : t.translate(setting.validationError, { scope: 'app.validationErrors' }),
+    isOpen: setting.isEdited,
+    value: setting.editedValue,
   }
 }
 

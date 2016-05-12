@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import Errors from '../components/Errors'
-import errorTypes from '../components/errorTypes'
+import errorTypes from '../constants/errorTypes'
 import { getSubtitleErrors } from '../selectors/index'
 
 const getErrors = (state) => {
@@ -18,6 +18,7 @@ const getErrors = (state) => {
 }
 
 const mapStateToProps = (state) => ({
+  translations: state.settings.localization.translations,
   errors: getErrors(state),
   greaterThanSmall: state.browser.greaterThan.small,
 })

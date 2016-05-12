@@ -3,11 +3,13 @@ import { changeMinCps, rollbackMinCps, submitMinCps } from '../actions/index'
 import NumericalSettingEditor from '../components/NumericalSettingEditor'
 
 const mapStateToProps = (state) => {
+  const t = state.settings.localization.translations
+  const setting = state.settings.minCps
   return {
-    label: 'Minimum CPS',
-    errorText: state.settings.minCps.errorText,
-    isOpen: state.settings.minCps.isEdited,
-    value: state.settings.minCps.editedValue,
+    label: t.translate('app.settingsPage.minCps'),
+    errorText: setting.validationError === null ? null : t.translate(setting.validationError, { scope: 'app.validationErrors' }),
+    isOpen: setting.isEdited,
+    value: setting.editedValue,
   }
 }
 

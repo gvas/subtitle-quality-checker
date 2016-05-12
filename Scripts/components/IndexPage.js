@@ -23,6 +23,9 @@ const styles = {
 class IndexPage extends React.Component {
 
   static propTypes = {
+    translations: PropTypes.shape({
+      translate: PropTypes.func.isRequired,
+    }).isRequired,
     greaterThanSmall: PropTypes.bool.isRequired,
     hasResults: PropTypes.bool.isRequired,
     encoding: PropTypes.string.isRequired,
@@ -47,6 +50,8 @@ class IndexPage extends React.Component {
   }
 
   render() {
+    const t = this.props.translations
+
     return (
       <Dropzone onDrop={this.onDrop} multiple={false} style={styles.dropzone}>
         <svg width="48" height="48" viewBox="0 0 24 24">
@@ -54,9 +59,9 @@ class IndexPage extends React.Component {
           <text fill="black" x="7" y="14" style={styles.svgFont}>srt</text>
           <path d="M0 0h24v24H0z" fill="none"/>
         </svg>
-        <h2>Húzd ide a feliratfájlt, </h2>
-        <p>vagy</p>
-        <p>kattints a fájl kiválasztásához!</p>
+        <h2>{t.translate('app.indexPage.instructions1')}</h2>
+        <p>{t.translate('app.indexPage.instructions2')}</p>
+        <p>{t.translate('app.indexPage.instructions3')}</p>
       </Dropzone>
     )
   }

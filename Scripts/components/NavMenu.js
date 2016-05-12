@@ -8,6 +8,9 @@ const SelectableList = SelectableContainerEnhance(List)
 export default class NavMenu extends React.Component {
 
   static propTypes = {
+    translations: PropTypes.shape({
+      translate: PropTypes.func.isRequired,
+    }).isRequired,
     location: PropTypes.shape({
       pathname: PropTypes.string.isRequired,
     }).isRequired,
@@ -21,13 +24,15 @@ export default class NavMenu extends React.Component {
   }
 
   render() {
+    const t = this.props.translations
+
     return (
       <SelectableList valueLink={{ value: this.props.location.pathname, requestChange: this.onRequestChange }}>
-        <ListItem primaryText="Értékelés"
+        <ListItem primaryText={t.translate('app.navMenu.evaluation')}
           value="/" />
-        <ListItem primaryText="Beállítások"
+        <ListItem primaryText={t.translate('app.navMenu.settings')}
           value="/settings" />
-        <ListItem primaryText="Névjegy"
+        <ListItem primaryText={t.translate('app.navMenu.about')}
           value="/about" />
       </SelectableList>
     )

@@ -3,11 +3,13 @@ import { changeMinPauseMs, rollbackMinPauseMs, submitMinPauseMs } from '../actio
 import NumericalSettingEditor from '../components/NumericalSettingEditor'
 
 const mapStateToProps = (state) => {
+  const t = state.settings.localization.translations
+  const setting = state.settings.minPauseMs
   return {
-    label: 'Minimum szünet a felirattáblák között (ms)',
-    errorText: state.settings.minPauseMs.errorText,
-    isOpen: state.settings.minPauseMs.isEdited,
-    value: state.settings.minPauseMs.editedValue,
+    label: t.translate('app.settingsPage.minPauseMs'),
+    errorText: setting.validationError === null ? null : t.translate(setting.validationError, { scope: 'app.validationErrors' }),
+    isOpen: setting.isEdited,
+    value: setting.editedValue,
   }
 }
 

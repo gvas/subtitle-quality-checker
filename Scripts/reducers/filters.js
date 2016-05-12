@@ -1,5 +1,5 @@
 import { types } from '../actions/index'
-import errorTypes from '../components/errorTypes'
+import errorTypes from '../constants/errorTypes'
 
 const initialState = {
   [errorTypes.NO_PROBLEM]: true,

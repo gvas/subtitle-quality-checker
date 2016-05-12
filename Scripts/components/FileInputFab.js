@@ -20,8 +20,8 @@ export default class FileInputFab extends React.Component {
   storeInputElementReference = (el) => this.fileInputEl = el
 
   onOpen = () => {
-    this.fileInputEl.value = null;
-    this.fileInputEl.click();
+    this.fileInputEl.value = null
+    this.fileInputEl.click()
   }
 
   render() {

@@ -1,13 +1,15 @@
 import { connect } from 'react-redux'
-import { changeMaxRowCount, rollbackMaxRowCount, submitMaxRowCount } from '../actions'
+import { changeMaxRowCount, rollbackMaxRowCount, submitMaxRowCount } from '../actions/index'
 import NumericalSettingEditor from '../components/NumericalSettingEditor'
 
 const mapStateToProps = (state) => {
+  const t = state.settings.localization.translations
+  const setting = state.settings.maxRowCount
   return {
-    label: 'Felirattáblák maximális hossza (karakter)',
-    errorText: state.settings.maxRowCount.editor.errorText,
-    isOpen: state.settings.maxRowCount.editor.isOpen,
-    value: state.settings.maxRowCount.editor.value,
+    label: t.translate('app.settingsPage.maxRowCount'),
+    errorText: setting.validationError === null ? null : t.translate(setting.validationError, { scope: 'app.validationErrors' }),
+    isOpen: setting.isEdited,
+    value: setting.editedValue,
   }
 }
 

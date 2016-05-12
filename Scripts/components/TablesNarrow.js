@@ -45,6 +45,9 @@ const getCps = (startTimeMs, endTimeMs, text) => {
 export default class TablesNarrow extends React.Component {
 
   static propTypes = {
+    translations: PropTypes.shape({
+      translate: PropTypes.func.isRequired,
+    }).isRequired,
     tables: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number.isRequired,
@@ -56,6 +59,8 @@ export default class TablesNarrow extends React.Component {
   }
 
   render() {
+    const t = this.props.translations
+
     return (
       <ol style={styles.list}>
       {
@@ -63,8 +68,8 @@ export default class TablesNarrow extends React.Component {
           <li key={table.id} style={styles.listItem}>
             <div style={styles.index}>{table.id}</div>
             <div style={styles.primaryText}>{table.text}</div>
-            <div style={styles.secondaryText}>Kezdet / vég: {formatTime(table.startTimeMs)} - {formatTime(table.endTimeMs) }</div>
-            <div style={styles.secondaryText}>Időtartam: {table.endTimeMs - table.startTimeMs}, Karakterek: {lengthWithoutCRLF(table.text)}, CPS: {getCps(table.startTimeMs, table.endTimeMs, table.text)}</div>
+            <div style={styles.secondaryText}>{t.translate('app.tablesNarrow.stats1', { startTimeMs: formatTime(table.startTimeMs), endTimeMs: formatTime(table.endTimeMs) })}</div>
+            <div style={styles.secondaryText}>{t.translate('app.tablesNarrow.stats2', { durationMs: table.endTimeMs - table.startTimeMs, charCount: lengthWithoutCRLF(table.text), cps: getCps(table.startTimeMs, table.endTimeMs, table.text) })}</div>
           </li>
         ))
       }

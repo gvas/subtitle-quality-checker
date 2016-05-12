@@ -1,11 +1,21 @@
 import { connect } from 'react-redux'
 import { changeEncoding, rollbackEncoding, submitEncoding } from '../actions'
-import EncodingEditor from '../components/EncodingEditor'
+import encodings from '../constants/encodings'
+import SelectSettingEditor from '../components/SelectSettingEditor'
 
-const mapStateToProps = (state) => ({
-  isOpen: state.settings.encoding.isEdited,
-  value: state.settings.encoding.editedValue,
-})
+const mapStateToProps = (state) => {
+  const t = state.settings.localization.translations
+  const setting = state.settings.encoding
+  return {
+    translations: t,
+    isOpen: setting.isEdited,
+    value: setting.editedValue,
+    choices: encodings.map(encoding => ({
+      label: t.translate(encoding, { scope: 'app.encodings' }),
+      value: encoding,
+    })),
+  }
+}
 
 const mapDispatchToProps = {
   onChange: changeEncoding,
@@ -16,6 +26,6 @@ const mapDispatchToProps = {
 const EncodingEditorContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(EncodingEditor)
+)(SelectSettingEditor)
 
 export default EncodingEditorContainer

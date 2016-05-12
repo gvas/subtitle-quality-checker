@@ -51,6 +51,9 @@ const getLongestRowLength = text => {
 export default class TablesWide extends React.Component {
 
   static propTypes = {
+    translations: PropTypes.shape({
+      translate: PropTypes.func.isRequired,
+    }).isRequired,
     tables: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number.isRequired,
@@ -62,23 +65,26 @@ export default class TablesWide extends React.Component {
   }
 
   render() {
+    const t = this.props.translations
+
     const lastHeaderCell = merge({}, styles.cell, styles['cell--header'], styles['cell--last'])
     const numericHeaderCell = merge({}, styles.cell, styles['cell--header'], styles['cell--numeric'])
     const firstNumericHeaderCell = merge({}, styles.cell, styles['cell--header'], styles['cell--numeric'], styles['cell--first'])
     const lastCell = merge({}, styles.cell, styles['cell--last'])
     const numericCell = merge({}, styles.cell, styles['cell--numeric'])
     const firstNumericCell = merge({}, styles.cell, styles['cell--numeric'], styles['cell-first'])
+
     return (
       <table style={styles.table}>
         <thead>
           <tr>
             <th style={firstNumericHeaderCell}>#</th>
-            <th style={numericHeaderCell}>Kezdet / vég</th>
-            <th style={numericHeaderCell}>Időtartam</th>
-            <th style={numericHeaderCell}>CPS</th>
-            <th style={numericHeaderCell}>Sorhossz</th>
-            <th style={numericHeaderCell}>Karakterek</th>
-            <th style={lastHeaderCell}>Szöveg</th>
+            <th style={numericHeaderCell}>{t.translate('app.tablesWide.startEnd')}</th>
+            <th style={numericHeaderCell}>{t.translate('app.tablesWide.duration')}</th>
+            <th style={numericHeaderCell}>{t.translate('app.tablesWide.cps')}</th>
+            <th style={numericHeaderCell}>{t.translate('app.tablesWide.rowLength')}</th>
+            <th style={numericHeaderCell}>{t.translate('app.tablesWide.charCount')}</th>
+            <th style={lastHeaderCell}>{t.translate('app.tablesWide.text')}</th>
           </tr>
         </thead>
         <tbody>

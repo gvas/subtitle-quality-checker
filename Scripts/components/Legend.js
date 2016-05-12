@@ -40,21 +40,30 @@ const getStyles = defaultMemoize((theme, ...classNames) => {
 
 export default class Legend extends React.Component {
 
+  static propTypes = {
+    translations: PropTypes.shape({
+      translate: PropTypes.func.isRequired,
+    }).isRequired,
+  }
+
   static contextTypes = {
     muiTheme: PropTypes.object.isRequired,
   }
 
   render() {
+    const t = this.props.translations
+
     const theme = this.context.muiTheme
+
     return (
       <ol style={getStyles(theme, 'list')}>
         <li style={getStyles(theme, 'listItem')}>
           <div style={getStyles(theme, 'color', 'color--primary') } />
-          <span style={getStyles(theme, 'text')}>Helyes felirattáblák</span>
+          <span style={getStyles(theme, 'text')}>{t.translate('app.legend.goodTables')}</span>
         </li>
         <li style={getStyles(theme, 'listItem')}>
           <div style={getStyles(theme, 'color', 'color--accent') } />
-          <span style={getStyles(theme, 'text')}>Hibás felirattáblák</span>
+          <span style={getStyles(theme, 'text')}>{t.translate('app.legend.badTables')}</span>
         </li>
       </ol>
     )

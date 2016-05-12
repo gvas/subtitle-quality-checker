@@ -3,11 +3,13 @@ import { changeMinDurationMs, rollbackMinDurationMs, submitMinDurationMs } from 
 import NumericalSettingEditor from '../components/NumericalSettingEditor'
 
 const mapStateToProps = (state) => {
+  const t = state.settings.localization.translations
+  const setting = state.settings.minDurationMs
   return {
-    label: 'Felirattáblák minimális hossza (ms)',
-    errorText: state.settings.minDurationMs.errorText,
-    isOpen: state.settings.minDurationMs.isEdited,
-    value: state.settings.minDurationMs.editedValue,
+    label: t.translate('app.settingsPage.minDurationMs'),
+    errorText: setting.validationError === null ? null : t.translate(setting.validationError, { scope: 'app.validationErrors' }),
+    isOpen: setting.isEdited,
+    value: setting.editedValue,
   }
 }
 

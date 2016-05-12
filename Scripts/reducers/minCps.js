@@ -1,20 +1,21 @@
 import { types } from '../actions/index'
+import validationErrorTypes from '../constants/validationErrorTypes'
 
 const initialState = {
   value: 8,
   isEdited: false,
   editedValue: '8',
-  errorText: null,
+  validationError: null,
 }
 
 function validate(value) {
   if (!value.length) {
-    return 'Kötelező'
+    return validationErrorTypes.REQUIRED
   }
 
   const valueAsNumber = parseInt(value, 10)
   if (isNaN(valueAsNumber) || valueAsNumber.toString() !== value || valueAsNumber < 1) {
-    return 'Pozitív egész szám'
+    return validationErrorTypes.POSITIVE_INTEGER
   }
 
   return null
@@ -38,19 +39,20 @@ export default function minCps(state = initialState, action) {
         ...state,
         isEdited: false,
         editedValue: state.value.toString(),
+        validationError: null,
       }
     case types.SUBMIT_MIN_CPS: {
-      const errorText = validate(state.editedValue)
-      return errorText === null
+      const validationError = validate(state.editedValue)
+      return validationError === null
         ? {
           ...state,
           value: parseInt(state.editedValue, 10),
           isEdited: false,
-          errorText: null,
+          validationError,
         }
         : {
           ...state,
-          errorText: errorText,
+          validationError,
         }
     }
     default:

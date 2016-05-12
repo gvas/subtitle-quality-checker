@@ -1,22 +1,21 @@
 import { types } from '../actions/index'
+import validationErrorTypes from '../constants/validationErrorTypes'
 
 const initialState = {
   value: 2,
-  editor: {
-    isOpen: false,
-    errorText: null,
-    value: '2',
-  },
+  isEdited: false,
+  editedValue: '2',
+  validationError: null,
 }
 
 function validate(value) {
   if (!value.length) {
-    return 'Kötelező'
+    return validationErrorTypes.REQUIRED
   }
 
   const valueAsNumber = parseInt(value, 10)
   if (isNaN(valueAsNumber) || valueAsNumber.toString() !== value || valueAsNumber < 1) {
-    return 'Pozitív egész szám'
+    return validationErrorTypes.POSITIVE_INTEGER
   }
 
   return null
@@ -27,49 +26,33 @@ export default function maxCharCount(state = initialState, action) {
     case types.OPEN_MAX_ROW_COUNT_EDITOR:
       return {
         ...state,
-        editor: {
-          ...state.editor,
-          isOpen: true,
-          errorText: null,
-          value: state.value.toString(),
-        },
+        isEdited: true,
+        editedValue: state.value.toString(),
       }
     case types.CHANGE_MAX_ROW_COUNT:
       return {
         ...state,
-        editor: {
-          ...state.editor,
-          value: action.payload,
-        },
+        editedValue: action.payload,
       }
     case types.ROLLBACK_MAX_ROW_COUNT:
       return {
         ...state,
-        editor: {
-          ...state.editor,
-          isOpen: false,
-          errorText: null,
-          value: state.value.toString(),
-        },
+        isEdited: false,
+        editedValue: state.value.toString(),
+        validationError: null,
       }
     case types.SUBMIT_MAX_ROW_COUNT: {
-      const errorText = validate(state.editor.value)
-      return errorText === null
+      const validationError = validate(state.editedValue)
+      return validationError === null
         ? {
-            ...state,
-            value: parseInt(state.editor.value, 10),
-            editor: {
-              ...state.editor,
-              isOpen: false,
-              errorText: null,
-            },
-          }
+          ...state,
+          value: parseInt(state.editedValue, 10),
+          isEdited: false,
+          validationError,
+        }
         : {
           ...state,
-          editor: {
-            ...state.editor,
-            errorText: errorText,
-          },
+          validationError,
         }
     }
     default:

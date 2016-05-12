@@ -3,11 +3,13 @@ import { changeMaxCps, rollbackMaxCps, submitMaxCps } from '../actions/index'
 import NumericalSettingEditor from '../components/NumericalSettingEditor'
 
 const mapStateToProps = (state) => {
+  const t = state.settings.localization.translations
+  const setting = state.settings.maxCps
   return {
-    label: 'Maximum CPS',
-    errorText: state.settings.maxCps.errorText,
-    isOpen: state.settings.maxCps.isEdited,
-    value: state.settings.maxCps.editedValue,
+    label: t.translate('app.settingsPage.maxCps'),
+    errorText: setting.validationError === null ? null : t.translate(setting.validationError, { scope: 'app.validationErrors' }),
+    isOpen: setting.isEdited,
+    value: setting.editedValue,
   }
 }
 

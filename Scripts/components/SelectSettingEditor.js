@@ -1,20 +1,6 @@
 import React, {PropTypes} from 'react'
 import {Dialog, FlatButton, RadioButton, RadioButtonGroup} from 'material-ui'
 
-const encodings = [
-  'utf-8',
-  'ibm866',
-  'iso_8859-2',
-  'iso-8859-3',
-  'iso-8859-4',
-  'iso-8859-5',
-  'iso-8859-6',
-  'iso-8859-7',
-  'iso-8859-8',
-  'iso-8859-8-i',
-  'windows-1250',
-]
-
 const styles = {
   dialogContent: {
     maxWidth: 500,
@@ -27,11 +13,18 @@ const styles = {
   },
 }
 
-export default class EncodingEditor extends React.Component {
+export default class SelectSettingEditor extends React.Component {
 
   static propTypes = {
+    translations: PropTypes.shape({
+      translate: PropTypes.func.isRequired,
+    }).isRequired,
     isOpen: PropTypes.bool.isRequired,
     value: PropTypes.string.isRequired,
+    choices: PropTypes.arrayOf(PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+    })).isRequired,
     onChange: PropTypes.func.isRequired,
     onRollback: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
@@ -42,14 +35,16 @@ export default class EncodingEditor extends React.Component {
   }
 
   render() {
+    const t = this.props.translations
+
     const actions = [
       <FlatButton
-        label="Mégsem"
+        label={t.translate('app.selectSettingsEditor.cancel')}
         secondary={true}
         onTouchTap={this.props.onRollback}
         />,
       <FlatButton
-        label="OK"
+        label={t.translate('app.selectSettingsEditor.ok')}
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.props.onSubmit}
@@ -63,12 +58,12 @@ export default class EncodingEditor extends React.Component {
         actions={actions}
         autoScrollBodyContent={true}>
         <RadioButtonGroup
-          name="encoding"
+          name="group"
           defaultSelected={this.props.value}
           onChange={this.onChange}>
           {
-            encodings.map((encoding, index) => (
-              <RadioButton key={index} label={encoding} value={encoding} iconStyle={styles.radioIcon} labelStyle={styles.radioLabel} />
+            this.props.choices.map((choice, index) => (
+              <RadioButton key={index} label={choice.label} value={choice.value} iconStyle={styles.radioIcon} labelStyle={styles.radioLabel} />
             ))
           }
         </RadioButtonGroup>

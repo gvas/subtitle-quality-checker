@@ -9,10 +9,12 @@ import {
   openMaxCpsEditor,
   openMinPauseMsEditor,
   openMinDurationMsEditor,
-} from '../actions'
+  openLocalizationEditor,
+} from '../actions/index'
 import SettingsPage from '../components/SettingsPage'
 
 const mapStateToProps = (state) => ({
+  translations: state.settings.localization.translations,
   encoding: state.settings.encoding.value,
   maxRowCount: state.settings.maxRowCount.value,
   maxCharCount: state.settings.maxCharCount.value,
@@ -22,6 +24,7 @@ const mapStateToProps = (state) => ({
   maxCps: state.settings.maxCps.value,
   minPauseMs: state.settings.minPauseMs.value,
   minDurationMs: state.settings.minDurationMs.value,
+  localization: state.settings.localization.value,
 })
 
 const mapDispatchToProps = {
@@ -34,6 +37,7 @@ const mapDispatchToProps = {
   openMaxCpsEditor,
   openMinPauseMsEditor,
   openMinDurationMsEditor,
+  openLocalizationEditor,
 }
 
 const SettingsPageContainer = connect(

@@ -1,20 +1,21 @@
 import { types } from '../actions/index'
+import validationErrorTypes from '../constants/validationErrorTypes'
 
 const initialState = {
   value: 40,
   isEdited: false,
   editedValue: '40',
-  errorText: null,
+  validationError: null,
 }
 
 function validate(value) {
   if (!value.length) {
-    return 'Kötelező'
+    return validationErrorTypes.REQUIRED
   }
 
   const valueAsNumber = parseInt(value, 10)
   if (isNaN(valueAsNumber) || valueAsNumber.toString() !== value || valueAsNumber < 1) {
-    return 'Pozitív egész szám'
+    return validationErrorTypes.POSITIVE_INTEGER
   }
 
   return null
@@ -40,17 +41,17 @@ export default function maxRowLength(state = initialState, action) {
         editedValue: state.value.toString(),
       }
     case types.SUBMIT_MAX_ROW_LENGTH: {
-      const errorText = validate(state.editor.value)
-      return errorText === null
+      const validationError = validate(state.editedValue)
+      return validationError === null
         ? {
-            ...state,
-            value: parseInt(state.editedValue, 10),
-            isEdited: false,
-            errorText: null,
-          }
+          ...state,
+          value: parseInt(state.editedValue, 10),
+          isEdited: false,
+          validationError,
+        }
         : {
-            ...state,
-            errorText: errorText,
+          ...state,
+          validationError,
         }
     }
     default:

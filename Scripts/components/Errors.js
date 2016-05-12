@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react'
 import {Card, CardText} from 'material-ui'
 import merge from 'lodash.merge'
-import errorTypes from './errorTypes'
 
 const styles = {
   card: {
@@ -52,21 +51,12 @@ const styles = {
   },
 }
 
-const descriptions = {
-  [errorTypes.MERGEABLE]: 'Összevonható a következővel',
-  [errorTypes.TOO_LONG_ROWS]: 'Túl hosszú sorok',
-  [errorTypes.TOO_MANY_CHARACTERS]: 'Túl sok karakter',
-  [errorTypes.TOO_MANY_ROWS]: 'Túl sok sor',
-  [errorTypes.TOO_SHORT_DURATION]: 'Túl rövid időtartam',
-  [errorTypes.TOO_LONG_DURATION]: 'Túl hosszú időtartam',
-  [errorTypes.TOO_LITTLE_CPS]: 'Túl kicsi CPS',
-  [errorTypes.TOO_BIG_CPS]: 'Túl nagy CPS',
-  [errorTypes.TOO_SHORT_PAUSE]: 'Túl rövid szünet utána',
-}
-
 export default class Errors extends React.Component {
 
   static propTypes = {
+    translations: PropTypes.shape({
+      translate: PropTypes.func.isRequired,
+    }).isRequired,
     errors: PropTypes.arrayOf(PropTypes.shape({
       errorType: PropTypes.string.isRequired,
       count: PropTypes.number.isRequired,
@@ -75,6 +65,8 @@ export default class Errors extends React.Component {
   }
 
   render() {
+    const t = this.props.translations
+
     const cardStyle = this.props.greaterThanSmall
       ? merge({}, styles.card, styles.cardMedium)
       : styles.card
@@ -88,13 +80,13 @@ export default class Errors extends React.Component {
     const listItems = this.props.errors.map(error => (
         <div key={error.errorType} style={styles.listItem}>
           <span style={styles.errorCount}>{error.count}</span>
-          <span style={styles.errorDescription}>{descriptions[error.errorType]}</span>
+          <span style={styles.errorDescription}>{t.translate(error.errorType, { scope: 'app.errorTypes' })}</span>
         </div>
     ))
 
     return (
       <Card style={cardStyle}>
-        <h2 style={titleStyle}>Hibák</h2>
+        <h2 style={titleStyle}>{t.translate('app.errors.title')}</h2>
         <CardText style={listStyle}>
           {listItems}
         </CardText>

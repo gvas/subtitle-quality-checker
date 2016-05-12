@@ -4,7 +4,6 @@ import ContentFilter from 'material-ui/lib/svg-icons/content/filter-list'
 import merge from 'lodash.merge'
 import TablesNarrow from './TablesNarrow'
 import TablesWide from './TablesWide'
-import errorTypes from './errorTypes'
 
 const styles = {
   card: {
@@ -41,22 +40,12 @@ const styles = {
   },
 }
 
-const labels = {
-  [errorTypes.NO_PROBLEM]: 'Problémamentes',
-  [errorTypes.MERGEABLE]: 'Összevonható a következővel',
-  [errorTypes.TOO_LONG_ROWS]: 'Túl hosszú sorok',
-  [errorTypes.TOO_MANY_CHARACTERS]: 'Túl sok karakter',
-  [errorTypes.TOO_MANY_ROWS]: 'Túl sok sor',
-  [errorTypes.TOO_SHORT_DURATION]: 'Túl rövid időtartam',
-  [errorTypes.TOO_LONG_DURATION]: 'Túl hosszú időtartam',
-  [errorTypes.TOO_LITTLE_CPS]: 'Túl kicsi CPS',
-  [errorTypes.TOO_BIG_CPS]: 'Túl nagy CPS',
-  [errorTypes.TOO_SHORT_PAUSE]: 'Túl rövid szünet utána',
-}
-
 export default class Tables extends React.Component {
 
   static propTypes = {
+    translations: PropTypes.shape({
+      translate: PropTypes.func.isRequired,
+    }).isRequired,
     filteredTables: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number.isRequired,
@@ -78,6 +67,8 @@ export default class Tables extends React.Component {
   }
 
   render() {
+    const t = this.props.translations
+
     const toolbarStyle = this.props.responsiveState.greaterThan.xsmall
       ? merge({}, styles.toolbar, styles.toolbarSmall)
       : styles.toolbar
@@ -86,7 +77,7 @@ export default class Tables extends React.Component {
       <MenuItem
         key={filter.errorType}
         value={filter.errorType}
-        primaryText={labels[filter.errorType]}
+        primaryText={t.translate(filter.errorType, { scope: 'app.errorTypes' })}
         checked={filter.checked}
         innerDivStyle={styles.filterMenuItem} />
     ))
@@ -95,7 +86,7 @@ export default class Tables extends React.Component {
       <Card style={styles.card}>
         <div style={toolbarStyle}>
           <h2 style={styles.toolbarTitle}>
-            Felirattáblák
+            {t.translate('app.tables.title')}
           </h2>
           <div style={styles.toolbarActions}>
             <IconMenu
@@ -109,8 +100,8 @@ export default class Tables extends React.Component {
         </div>
         {
           this.props.responsiveState.greaterThan.small
-            ? <TablesWide tables={this.props.filteredTables} />
-            : <TablesNarrow tables={this.props.filteredTables} />
+            ? <TablesWide tables={this.props.filteredTables} translations={this.props.translations} />
+            : <TablesNarrow tables={this.props.filteredTables} translations={this.props.translations} />
         }
       </Card>
     )

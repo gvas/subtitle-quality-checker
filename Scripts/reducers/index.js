@@ -50,16 +50,16 @@ const appSpecific = (state = initialAppSpecificState, action) => {
 }
 
 const rootReducer = combineReducers({
-  settings,
-  filters: filters,
   appSpecific,
-  routing: routerReducer,
   browser: createResponsiveStateReducer({
     xsmall: 480,
     small: 960,
     medium: 1280,
     large: 1920,
   }),
+  filters,
+  routing: routerReducer,
+  settings,
 })
 
 export default rootReducer

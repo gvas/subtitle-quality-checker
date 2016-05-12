@@ -3,11 +3,13 @@ import { changeMaxRowLength, rollbackMaxRowLength, submitMaxRowLength } from '..
 import NumericalSettingEditor from '../components/NumericalSettingEditor'
 
 const mapStateToProps = (state) => {
+  const t = state.settings.localization.translations
+  const setting = state.settings.maxRowLength
   return {
-    label: 'Sorok maximális hossza (karakter)',
-    errorText: state.settings.maxRowLength.errorText,
-    isOpen: state.settings.maxRowLength.isEdited,
-    value: state.settings.maxRowLength.editedValue,
+    label: t.translate('app.settingsPage.maxRowLength'),
+    errorText: setting.validationError === null ? null : t.translate(setting.validationError, { scope: 'app.validationErrors' }),
+    isOpen: setting.isEdited,
+    value: setting.editedValue,
   }
 }
 

@@ -50,6 +50,10 @@ export const types = {
   ROLLBACK_MIN_DURATION_MS: 'ROLLBACK_MIN_DURATION_MS',
   SUBMIT_MIN_DURATION_MS: 'SUBMIT_MIN_DURATION_MS',
   TOGGLE_FILTER: 'TOGGLE_FILTER',
+  OPEN_LOCALIZATION_EDITOR: 'OPEN_LOCALIZATION_EDITOR',
+  CHANGE_LOCALIZATION: 'CHANGE_LOCALIZATION',
+  ROLLBACK_LOCALIZATION: 'ROLLBACK_LOCALIZATION',
+  SUBMIT_LOCALIZATION: 'SUBMIT_LOCALIZATION',
 }
 
 export function calculateResponsiveState() {
@@ -276,4 +280,21 @@ export const submitMinDurationMs = () => ({
 export const toggleFilter = (errorType) => ({
   type: types.TOGGLE_FILTER,
   payload: errorType,
+})
+
+export const openLocalizationEditor = () => ({
+  type: types.OPEN_LOCALIZATION_EDITOR,
+})
+
+export const changeLocalization = (locale) => ({
+  type: types.CHANGE_LOCALIZATION,
+  payload: locale,
+})
+
+export const rollbackLocalization = () => ({
+  type: types.ROLLBACK_LOCALIZATION,
+})
+
+export const submitLocalization = () => ({
+  type: types.SUBMIT_LOCALIZATION,
 })

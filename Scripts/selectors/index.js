@@ -1,7 +1,7 @@
 /*global TextDecoder*/
 import { createSelector } from 'reselect'
 import { lengthWithoutCRLF } from '../utils/stringUtils'
-import errorTypes from '../components/errorTypes'
+import errorTypes from '../constants/errorTypes'
 
 const getFileContent = (state) => state.appSpecific.fileContent
 const getEncoding = (state) => state.settings.encoding.value

@@ -20,13 +20,12 @@ const getFilters = (state) => {
   return result
 }
 
-const mapStateToProps = (state) => {
-  return {
-    filteredTables: getFilteredTables(state),
-    filters: getFilters(state),
-    responsiveState: state.browser,
-  }
-}
+const mapStateToProps = (state) => ({
+  translations: state.settings.localization.translations,
+  filteredTables: getFilteredTables(state),
+  filters: getFilters(state),
+  responsiveState: state.browser,
+})
 
 const mapDispatchToProps = {
   toggleFilter,

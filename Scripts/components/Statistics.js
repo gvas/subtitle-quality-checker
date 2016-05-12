@@ -63,6 +63,9 @@ const styles = {
 export default class Statistics extends React.Component {
 
   static propTypes = {
+    translations: PropTypes.shape({
+      translate: PropTypes.func.isRequired,
+    }).isRequired,
     score: PropTypes.number.isRequired,
     goodTablesCount: PropTypes.number.isRequired,
     badTablesCount: PropTypes.number.isRequired,
@@ -71,7 +74,10 @@ export default class Statistics extends React.Component {
   }
 
   render() {
+    const t = this.props.translations
+
     const percentage = Math.round(this.props.score * 100)
+
     const cardStyle = this.props.responsiveState.greaterThan.xsmall
       ? merge({}, styles.card, styles.cardSmall)
       : styles.card
@@ -87,22 +93,22 @@ export default class Statistics extends React.Component {
 
     return (
       <Card style={cardStyle}>
-        <h2 style={titleStyle}>Statisztika</h2>
+        <h2 style={titleStyle}>{t.translate('app.statistics.title')}</h2>
         <div style={mediaStyle}>
           <PercentageBar percentage={percentage} />
-          <Legend />
+          <Legend translations={this.props.translations} />
         </div>
         <ol style={listStyle}>
           <li style={styles.listItem}>
-            <label style={styles.label}>Fájl</label>
+            <label style={styles.label}>{t.translate('app.statistics.file')}</label>
             <span style={styles.data}>{this.props.fileName}</span>
           </li>
           <li style={styles.listItem}>
-            <label style={styles.label}>Helyes felirattáblák száma</label>
+            <label style={styles.label}>{t.translate('app.statistics.goodTablesCount')}</label>
             <span style={styles.data}>{this.props.goodTablesCount}</span>
           </li>
           <li style={styles.listItem}>
-            <label style={styles.label}>Hibás felirattáblák száma</label>
+            <label style={styles.label}>{t.translate('app.statistics.badTablesCount')}</label>
             <span style={styles.data}>{this.props.badTablesCount}</span>
           </li>
         </ol>

@@ -10,6 +10,7 @@ import MaxPauseMsEditorContainer from '../containers/MaxPauseMsEditorContainer'
 import MinCpsEditorContainer from '../containers/MinCpsEditorContainer'
 import MaxCpsEditorContainer from '../containers/MaxCpsEditorContainer'
 import MinPauseMsEditorContainer from '../containers/MinPauseMsEditorContainer'
+import LocalizationEditorContainer from '../containers/LocalizationEditorContainer'
 
 const styles = {
   card: {
@@ -25,6 +26,10 @@ export default class SettingsPage extends React.Component {
   }
 
   static propTypes = {
+    translations: PropTypes.shape({
+      translate: PropTypes.func.isRequired,
+    }).isRequired,
+    localization: PropTypes.string.isRequired,
     encoding: PropTypes.string.isRequired,
     maxRowCount: PropTypes.number.isRequired,
     maxCharCount: PropTypes.number.isRequired,
@@ -34,6 +39,7 @@ export default class SettingsPage extends React.Component {
     minCps: PropTypes.number.isRequired,
     maxCps: PropTypes.number.isRequired,
     minPauseMs: PropTypes.number.isRequired,
+    openLocalizationEditor: PropTypes.func.isRequired,
     openEncodingEditor: PropTypes.func.isRequired,
     openMaxRowCountEditor: PropTypes.func.isRequired,
     openMaxCharCountEditor: PropTypes.func.isRequired,
@@ -46,55 +52,63 @@ export default class SettingsPage extends React.Component {
   }
 
   render() {
+    const t = this.props.translations
+
     return (
       <Card style={styles.card}>
         <List>
           <ListItem
-            primaryText="Feliratfájlok karakterkódolása"
+            primaryText={t.translate('app.settingsPage.language')}
+            secondaryText={this.props.localization}
+            onTouchTap={this.props.openLocalizationEditor}
+            />
+          <ListItem
+            primaryText={t.translate('app.settingsPage.encoding')}
             secondaryText={this.props.encoding}
             onTouchTap={this.props.openEncodingEditor}
             />
           <ListItem
-            primaryText="Felirattáblák maximális hossza (sor)"
+            primaryText={t.translate('app.settingsPage.maxRowCount')}
             secondaryText={this.props.maxRowCount}
             onTouchTap={this.props.openMaxRowCountEditor}
             />
           <ListItem
-            primaryText="Felirattáblák maximális hossza (karakter)"
+            primaryText={t.translate('app.settingsPage.maxCharCount')}
             secondaryText={this.props.maxCharCount}
             onTouchTap={this.props.openMaxCharCountEditor}
             />
           <ListItem
-            primaryText="Felirattáblák minimális hossza (ms)"
+            primaryText={t.translate('app.settingsPage.minDurationMs')}
             secondaryText={this.props.minDurationMs}
             onTouchTap={this.props.openMinDurationMsEditor}
             />
           <ListItem
-            primaryText="Felirattáblák maximális hossza (ms)"
+            primaryText={t.translate('app.settingsPage.maxDurationMs')}
             secondaryText={this.props.maxDurationMs}
             onTouchTap={this.props.openMaxDurationMsEditor}
             />
           <ListItem
-            primaryText="Összevonható felirattáblák közti szünet max. hossza (ms)"
+            primaryText={t.translate('app.settingsPage.maxPauseMs')}
             secondaryText={this.props.maxPauseMs}
             onTouchTap={this.props.openMaxPauseMsEditor}
             />
           <ListItem
-            primaryText="Minimum CPS"
+            primaryText={t.translate('app.settingsPage.minCps')}
             secondaryText={this.props.minCps}
             onTouchTap={this.props.openMinCpsEditor}
             />
           <ListItem
-            primaryText="Maximum CPS"
+            primaryText={t.translate('app.settingsPage.maxCps')}
             secondaryText={this.props.maxCps}
             onTouchTap={this.props.openMaxCpsEditor}
             />
           <ListItem
-            primaryText="Minimum szünet a felirattáblák között (ms)"
+            primaryText={t.translate('app.settingsPage.minPauseMs')}
             secondaryText={this.props.minPauseMs}
             onTouchTap={this.props.openMinPauseMsEditor}
             />
         </List>
+        <LocalizationEditorContainer />
         <EncodingEditorContainer />
         <MaxRowCountEditorContainer />
         <MaxCharCountEditorContainer />

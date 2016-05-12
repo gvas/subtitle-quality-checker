@@ -4,6 +4,7 @@ import { closeNavigationDrawer } from '../actions/index'
 import NavMenu from '../components/NavMenu'
 
 const mapStateToProps = (state, ownProps) => ({
+  translations: state.settings.localization.translations,
   location: ownProps.location,
 })
 

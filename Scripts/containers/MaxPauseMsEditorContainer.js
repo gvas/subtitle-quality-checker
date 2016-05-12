@@ -1,13 +1,15 @@
 import { connect } from 'react-redux'
-import { changeMaxPauseMs, rollbackMaxPauseMs, submitMaxPauseMs } from '../actions'
+import { changeMaxPauseMs, rollbackMaxPauseMs, submitMaxPauseMs } from '../actions/index'
 import NumericalSettingEditor from '../components/NumericalSettingEditor'
 
 const mapStateToProps = (state) => {
+  const t = state.settings.localization.translations
+  const setting = state.settings.maxPauseMs
   return {
-    label: 'Összevonható felirattáblák közti szünet max. hossza (ms)',
-    errorText: state.settings.maxPauseMs.editor.errorText,
-    isOpen: state.settings.maxPauseMs.editor.isOpen,
-    value: state.settings.maxPauseMs.editor.value,
+    label: t.translate('app.settingsPage.maxPauseMs'),
+    errorText: setting.validationError === null ? null : t.translate(setting.validationError, { scope: 'app.validationErrors' }),
+    isOpen: setting.isEdited,
+    value: setting.editedValue,
   }
 }
 

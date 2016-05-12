@@ -1,4 +1,4 @@
-const errorTypes = {
+export default {
   NO_PROBLEM: 'NO_PROBLEM',
   MERGEABLE: 'MERGEABLE',
   TOO_LONG_ROWS: 'TOO_LONG_ROWS',
@@ -10,5 +10,3 @@ const errorTypes = {
   TOO_BIG_CPS: 'TOO_BIG_CPS',
   TOO_SHORT_PAUSE: 'TOO_SHORT_PAUSE',
 }
-
-export default errorTypes
