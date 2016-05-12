@@ -1,9 +1,10 @@
 import { connect } from 'react-redux'
 import AppBar from 'material-ui/lib/app-bar'
 import { openNavigationDrawer } from '../actions/index'
+import { getTranslations } from '../selectors/index'
 
 const mapStateToProps = (state) => ({
-  title: state.settings.localization.translations.translate('app.appBar.title'),
+  title: getTranslations(state).translate('app.appBar.title'),
   style: { position: 'fixed' },
   showMenuIconButton: !state.browser.greaterThan.medium,
 })

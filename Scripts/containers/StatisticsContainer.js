@@ -1,9 +1,9 @@
 import { connect } from 'react-redux'
 import Statistics from '../components/Statistics'
-import { getScore, getGoodTablesCount, getBadTablesCount } from '../selectors'
+import { getScore, getGoodTablesCount, getBadTablesCount, getTranslations } from '../selectors/index'
 
 const mapStateToProps = (state, props) => ({
-  translations: state.settings.localization.translations,
+  translations: getTranslations(state),
   style: props.style,
   score: getScore(state),
   goodTablesCount: getGoodTablesCount(state),

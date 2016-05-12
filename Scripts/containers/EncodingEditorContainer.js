@@ -2,9 +2,10 @@ import { connect } from 'react-redux'
 import { changeEncoding, rollbackEncoding, submitEncoding } from '../actions'
 import encodings from '../constants/encodings'
 import SelectSettingEditor from '../components/SelectSettingEditor'
+import { getTranslations } from '../selectors/index'
 
 const mapStateToProps = (state) => {
-  const t = state.settings.localization.translations
+  const t = getTranslations(state)
   const setting = state.settings.encoding
   return {
     translations: t,

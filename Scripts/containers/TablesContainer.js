@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import Tables from '../components/Tables'
-import { getFilteredTables, getSubtitleErrors } from '../selectors/index'
+import { getFilteredTables, getSubtitleErrors, getTranslations } from '../selectors/index'
 import { toggleFilter } from '../actions/index'
 
 const getFilters = (state) => {
@@ -21,7 +21,7 @@ const getFilters = (state) => {
 }
 
 const mapStateToProps = (state) => ({
-  translations: state.settings.localization.translations,
+  translations: getTranslations(state),
   filteredTables: getFilteredTables(state),
   filters: getFilters(state),
   responsiveState: state.browser,

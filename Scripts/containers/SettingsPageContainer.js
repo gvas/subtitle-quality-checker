@@ -12,9 +12,10 @@ import {
   openLocalizationEditor,
 } from '../actions/index'
 import SettingsPage from '../components/SettingsPage'
+import { getTranslations } from '../selectors/index'
 
 const mapStateToProps = (state) => ({
-  translations: state.settings.localization.translations,
+  translations: getTranslations(state),
   encoding: state.settings.encoding.value,
   maxRowCount: state.settings.maxRowCount.value,
   maxCharCount: state.settings.maxCharCount.value,

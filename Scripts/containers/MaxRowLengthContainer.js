@@ -1,9 +1,10 @@
 import { connect } from 'react-redux'
 import { changeMaxRowLength, rollbackMaxRowLength, submitMaxRowLength } from '../actions/index'
 import NumericalSettingEditor from '../components/NumericalSettingEditor'
+import { getTranslations } from '../selectors/index'
 
 const mapStateToProps = (state) => {
-  const t = state.settings.localization.translations
+  const t = getTranslations(state)
   const setting = state.settings.maxRowLength
   return {
     label: t.translate('app.settingsPage.maxRowLength'),

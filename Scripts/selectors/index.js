@@ -1,10 +1,13 @@
 /*global TextDecoder*/
 import { createSelector } from 'reselect'
+import counterpart from 'counterpart'
+import * as locales from '../locales'
 import { lengthWithoutCRLF } from '../utils/stringUtils'
 import errorTypes from '../constants/errorTypes'
 
 const getFileContent = (state) => state.appSpecific.fileContent
 const getEncoding = (state) => state.settings.encoding.value
+const getLocale = (state) => state.settings.localization.value
 const getSettings = (state) => state.settings
 const getFilters = (state) => state.filters
 
@@ -154,5 +157,15 @@ export const getScore = createSelector(
     return (tables.length !== 0)
       ? 1 - badTableCount / tables.length
       : null
+  }
+)
+
+export const getTranslations = createSelector(
+  [getLocale],
+  locale => {
+    const translations = new counterpart.Instance()
+    translations.registerTranslations(locale, locales[locale])
+    translations.setLocale(locale)
+    return translations
   }
 )

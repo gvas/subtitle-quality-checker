@@ -1,9 +1,10 @@
 import { connect } from 'react-redux'
 import { changeMinPauseMs, rollbackMinPauseMs, submitMinPauseMs } from '../actions/index'
 import NumericalSettingEditor from '../components/NumericalSettingEditor'
+import { getTranslations } from '../selectors/index'
 
 const mapStateToProps = (state) => {
-  const t = state.settings.localization.translations
+  const t = getTranslations(state)
   const setting = state.settings.minPauseMs
   return {
     label: t.translate('app.settingsPage.minPauseMs'),

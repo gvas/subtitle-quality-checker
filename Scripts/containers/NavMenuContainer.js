@@ -2,9 +2,10 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import { closeNavigationDrawer } from '../actions/index'
 import NavMenu from '../components/NavMenu'
+import { getTranslations } from '../selectors/index'
 
 const mapStateToProps = (state, ownProps) => ({
-  translations: state.settings.localization.translations,
+  translations: getTranslations(state),
   location: ownProps.location,
 })
 
