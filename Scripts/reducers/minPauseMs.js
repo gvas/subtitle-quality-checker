@@ -1,3 +1,4 @@
+/*eslint-env node, browser*/
 import { types } from '../actions/index'
 import validationErrorTypes from '../constants/validationErrorTypes'
 
@@ -23,6 +24,17 @@ function validate(value) {
 
 export default function minPauseMs(state = initialState, action) {
   switch (action.type) {
+    case types.RESTORE_SETTINGS: {
+      const restored = localStorage.getItem('minPauseMs')
+      if (!restored || validate(restored) !== null) {
+        return state
+      } else {
+        return {
+          ...state,
+          value: parseInt(restored, 10),
+        }
+      }
+    }
     case types.OPEN_MIN_PAUSE_MS_EDITOR:
       return {
         ...state,
@@ -43,17 +55,20 @@ export default function minPauseMs(state = initialState, action) {
       }
     case types.SUBMIT_MIN_PAUSE_MS: {
       const validationError = validate(state.editedValue)
-      return validationError === null
-        ? {
+      if (validationError === null) {
+        localStorage.setItem('minPauseMs', state.editedValue)
+        return {
           ...state,
           value: parseInt(state.editedValue, 10),
           isEdited: false,
           validationError,
         }
-        : {
+      } else {
+        return {
           ...state,
           validationError,
         }
+      }
     }
     default:
       return state

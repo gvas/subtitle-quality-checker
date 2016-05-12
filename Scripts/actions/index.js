@@ -54,6 +54,7 @@ export const types = {
   CHANGE_LOCALIZATION: 'CHANGE_LOCALIZATION',
   ROLLBACK_LOCALIZATION: 'ROLLBACK_LOCALIZATION',
   SUBMIT_LOCALIZATION: 'SUBMIT_LOCALIZATION',
+  RESTORE_SETTINGS: 'RESTORE_SETTINGS',
 }
 
 export function calculateResponsiveState() {
@@ -297,4 +298,8 @@ export const rollbackLocalization = () => ({
 
 export const submitLocalization = () => ({
   type: types.SUBMIT_LOCALIZATION,
+})
+
+export const restoreSettings = () => ({
+  type: types.RESTORE_SETTINGS,
 })

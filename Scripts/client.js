@@ -10,7 +10,7 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import Routes from './components/Routes'
 import configureStore from './store/configureStore'
-import { calculateResponsiveState } from './actions'
+import { calculateResponsiveState, restoreSettings } from './actions/index'
 
 //Needed for onTouchTap
 //Can go away when react 1.0 release
@@ -34,3 +34,4 @@ ReactDOM.render(
 )
 
 store.dispatch(calculateResponsiveState(window))
+store.dispatch(restoreSettings())

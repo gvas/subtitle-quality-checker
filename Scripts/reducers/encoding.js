@@ -1,4 +1,6 @@
+/*eslint-env node, browser*/
 import { types } from '../actions/index'
+import encodings from '../constants/encodings'
 
 const initialState = {
   value: 'utf-8',
@@ -8,6 +10,17 @@ const initialState = {
 
 export default function encoding(state = initialState, action) {
   switch (action.type) {
+    case types.RESTORE_SETTINGS: {
+      const restored = localStorage.getItem('encoding')
+      if (!restored || encodings.indexOf(restored) < 0) {
+        return state
+      } else {
+        return {
+          ...state,
+          value: restored,
+        }
+      }
+    }
     case types.OPEN_ENCODING_EDITOR:
       return {
         ...state,
@@ -25,13 +38,13 @@ export default function encoding(state = initialState, action) {
         isEdited: false,
         editedValue: state.value,
       }
-    case types.SUBMIT_ENCODING: {
+    case types.SUBMIT_ENCODING:
+      localStorage.setItem('encoding', state.editedValue)
       return {
         ...state,
         value: state.editedValue,
         isEdited: false,
       }
-    }
     default:
       return state
   }
