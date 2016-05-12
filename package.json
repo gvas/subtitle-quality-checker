@@ -2,6 +2,7 @@
   "name": "subtitle-evaluation",
   "version": "0.0.0",
   "description": "Quality checker for subtitles.",
+  "homepage": "https://subtitleevaluation.azurewebsites.net",
   "scripts": {
     "build": "gulp build",
     "dev": "gulp dev",
