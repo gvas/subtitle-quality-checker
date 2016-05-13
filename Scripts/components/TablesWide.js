@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react'
 import { lengthWithoutCRLF, formatTime } from '../utils/stringUtils'
-import merge from 'lodash.merge'
 
 const styles = {
   table: {
@@ -67,12 +66,12 @@ export default class TablesWide extends React.Component {
   render() {
     const t = this.props.translations
 
-    const lastHeaderCell = merge({}, styles.cell, styles['cell--header'], styles['cell--last'])
-    const numericHeaderCell = merge({}, styles.cell, styles['cell--header'], styles['cell--numeric'])
-    const firstNumericHeaderCell = merge({}, styles.cell, styles['cell--header'], styles['cell--numeric'], styles['cell--first'])
-    const lastCell = merge({}, styles.cell, styles['cell--last'])
-    const numericCell = merge({}, styles.cell, styles['cell--numeric'])
-    const firstNumericCell = merge({}, styles.cell, styles['cell--numeric'], styles['cell-first'])
+    const lastHeaderCell = Object.assign({}, styles.cell, styles['cell--header'], styles['cell--last'])
+    const numericHeaderCell = Object.assign({}, styles.cell, styles['cell--header'], styles['cell--numeric'])
+    const firstNumericHeaderCell = Object.assign({}, styles.cell, styles['cell--header'], styles['cell--numeric'], styles['cell--first'])
+    const lastCell = Object.assign({}, styles.cell, styles['cell--last'])
+    const numericCell = Object.assign({}, styles.cell, styles['cell--numeric'])
+    const firstNumericCell = Object.assign({}, styles.cell, styles['cell--numeric'], styles['cell-first'])
 
     return (
       <table style={styles.table}>

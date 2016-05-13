@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
-import {FloatingActionButton} from 'material-ui'
-import Refresh from 'material-ui/lib/svg-icons/navigation/refresh'
+import FloatingActionButton from 'material-ui/FloatingActionButton'
+import Refresh from 'material-ui/svg-icons/navigation/refresh'
 import {withRouter} from 'react-router'
 import FileInputFab from './FileInputFab'
 
@@ -44,7 +44,7 @@ class FloatingActionButtonMenu extends React.Component {
     return (
       <ol style={styles.list}>
         <li style={styles.listItem}>
-          <FloatingActionButton onTouchTap={this.onReload}>
+          <FloatingActionButton secondary={true} onTouchTap={this.onReload}>
             <Refresh />
           </FloatingActionButton>
         </li>

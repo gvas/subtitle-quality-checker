@@ -1,5 +1,7 @@
 import React, {PropTypes} from 'react'
-import {Dialog, FlatButton, RadioButton, RadioButtonGroup} from 'material-ui'
+import Dialog from 'material-ui/Dialog'
+import FlatButton from 'material-ui/FlatButton'
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton'
 
 const styles = {
   dialogContent: {

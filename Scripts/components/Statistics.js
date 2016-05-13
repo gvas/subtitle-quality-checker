@@ -1,7 +1,6 @@
 /*global Math*/
 import React, { PropTypes } from 'react'
-import {Card } from 'material-ui'
-import merge from 'lodash.merge'
+import {Card } from 'material-ui/Card'
 import PercentageBar from './PercentageBar'
 import Legend from './Legend'
 
@@ -79,16 +78,16 @@ export default class Statistics extends React.Component {
     const percentage = Math.round(this.props.score * 100)
 
     const cardStyle = this.props.responsiveState.greaterThan.xsmall
-      ? merge({}, styles.card, styles.cardSmall)
+      ? Object.assign({}, styles.card, styles.cardSmall)
       : styles.card
     const titleStyle = this.props.responsiveState.greaterThan.xsmall
-      ? merge({}, styles.title, styles.titleSmall)
+      ? Object.assign({}, styles.title, styles.titleSmall)
       : styles.title
     const mediaStyle = this.props.responsiveState.greaterThan.xsmall
-      ? merge({}, styles.media, styles.mediaSmall)
+      ? Object.assign({}, styles.media, styles.mediaSmall)
       : styles.media
     const listStyle = this.props.responsiveState.greaterThan.xsmall
-      ? merge({}, styles.list, styles.listSmall)
+      ? Object.assign({}, styles.list, styles.listSmall)
       : styles.list
 
     return (

@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react'
 import {withRouter} from 'react-router'
-import merge from 'lodash.merge'
 import FloatingActionButtonMenuContainer from '../containers/FloatingActionButtonMenuContainer'
 import StatisticsContainer from '../containers/StatisticsContainer'
 import ErrorsContainer from '../containers/ErrorsContainer'
@@ -34,7 +33,7 @@ class ResultsPage extends React.Component {
 
   render() {
     const deckStyle = this.props.greaterThanSmall
-      ? merge({}, styles.deck, styles.deckMedium)
+      ? Object.assign({}, styles.deck, styles.deckMedium)
       : styles.deck
 
     return (

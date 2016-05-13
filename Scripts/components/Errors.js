@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react'
-import {Card, CardText} from 'material-ui'
-import merge from 'lodash.merge'
+import {Card, CardText} from 'material-ui/Card'
 
 const styles = {
   card: {
@@ -68,13 +67,13 @@ export default class Errors extends React.Component {
     const t = this.props.translations
 
     const cardStyle = this.props.greaterThanSmall
-      ? merge({}, styles.card, styles.cardMedium)
+      ? Object.assign({}, styles.card, styles.cardMedium)
       : styles.card
     const titleStyle = this.props.greaterThanSmall
-      ? merge({}, styles.title, styles.titleMedium)
+      ? Object.assign({}, styles.title, styles.titleMedium)
       : styles.title
     const listStyle = this.props.greaterThanSmall
-      ? merge({}, styles.list, styles.listMedium)
+      ? Object.assign({}, styles.list, styles.listMedium)
       : styles.list
 
     const listItems = this.props.errors.map(error => (

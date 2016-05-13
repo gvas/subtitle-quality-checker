@@ -1,7 +1,6 @@
 ﻿import React, { PropTypes } from 'react'
-import merge from 'lodash.merge'
-import getMuiTheme from 'material-ui/lib/styles/getMuiTheme'
-import lightBaseTheme from 'material-ui/lib/styles/baseThemes/lightBaseTheme'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
+import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
 import AppBarContainer from '../containers/AppBarContainer'
 import ResponsiveNavigationDrawer from '../containers/ResponsiveNavigationDrawer'
 
@@ -61,10 +60,10 @@ export default class App extends React.Component {
 
   render() {
     const contentContainerStyle = this.props.greaterThanMedium
-      ? merge({}, styles.contentContainer, styles.contentContainerLarge)
+      ? Object.assign({}, styles.contentContainer, styles.contentContainerLarge)
       : styles.contentContainer
     const contentStyle = this.props.greaterThanSmall
-      ? merge({}, styles.content, styles.contentMedium)
+      ? Object.assign({}, styles.content, styles.contentMedium)
       : styles.content
 
     return (

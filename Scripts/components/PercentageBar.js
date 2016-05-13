@@ -1,5 +1,5 @@
 ﻿import React, { PropTypes } from 'react'
-import Typography from 'material-ui/lib/styles/typography'
+import Typography from 'material-ui/styles/typography'
 
 const getStyles = (props, context) => {
   const theme = context.muiTheme

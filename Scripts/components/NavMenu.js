@@ -1,9 +1,13 @@
 import React, { PropTypes } from 'react'
-import List from 'material-ui/lib/lists/list'
-import ListItem from 'material-ui/lib/lists/list-item'
-import { SelectableContainerEnhance } from 'material-ui/lib/hoc/selectable-enhance'
+import { List, ListItem, MakeSelectable } from 'material-ui/List'
 
-const SelectableList = SelectableContainerEnhance(List)
+const styles = {
+  listItem: {
+    WebkitAppearance: 'initial',
+  },
+}
+
+const SelectableList = MakeSelectable(List)
 
 export default class NavMenu extends React.Component {
 
@@ -18,7 +22,7 @@ export default class NavMenu extends React.Component {
     navigate: PropTypes.func.isRequired,
   }
 
-  onRequestChange = (event, pathName) => {
+  onChange = (event, pathName) => {
     this.props.closeNavigationDrawer()
     this.props.navigate(pathName)
   }
@@ -27,12 +31,12 @@ export default class NavMenu extends React.Component {
     const t = this.props.translations
 
     return (
-      <SelectableList valueLink={{ value: this.props.location.pathname, requestChange: this.onRequestChange }}>
-        <ListItem primaryText={t.translate('app.navMenu.evaluation')}
+      <SelectableList value={this.props.location.pathname} onChange={this.onChange}>
+        <ListItem style={styles.listItem} primaryText={t.translate('app.navMenu.evaluation')}
           value="/" />
-        <ListItem primaryText={t.translate('app.navMenu.settings')}
+        <ListItem style={styles.listItem} primaryText={t.translate('app.navMenu.settings')}
           value="/settings" />
-        <ListItem primaryText={t.translate('app.navMenu.about')}
+        <ListItem style={styles.listItem} primaryText={t.translate('app.navMenu.about')}
           value="/about" />
       </SelectableList>
     )

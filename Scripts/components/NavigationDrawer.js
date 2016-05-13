@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import LeftNav from 'material-ui/lib/left-nav'
+import Drawer from 'material-ui/Drawer'
 import NavMenuContainer from '../containers/NavMenuContainer'
 
 export default class NavigationDrawer extends React.Component {
@@ -29,13 +29,13 @@ export default class NavigationDrawer extends React.Component {
   render() {
     const style = this.props.isDocked ? { top: this.context.muiTheme.appBar.height } : {};
     return (
-      <LeftNav docked={this.props.isDocked}
+      <Drawer docked={this.props.isDocked}
         width={200}
         open={this.props.isOpen}
-        style={style}
+        containerStyle={style}
         onRequestChange={this.onRequestChange}>
         <NavMenuContainer location={this.props.location} />
-      </LeftNav>
+      </Drawer>
     )
   }
 }

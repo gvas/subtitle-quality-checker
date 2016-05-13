@@ -1,7 +1,9 @@
 import React, { PropTypes } from 'react'
-import { Card, IconButton, IconMenu, MenuItem } from 'material-ui'
-import ContentFilter from 'material-ui/lib/svg-icons/content/filter-list'
-import merge from 'lodash.merge'
+import Card from 'material-ui/Card'
+import IconButton from 'material-ui/IconButton'
+import IconMenu from 'material-ui/IconMenu'
+import MenuItem from 'material-ui/MenuItem'
+import ContentFilter from 'material-ui/svg-icons/content/filter-list'
 import TablesNarrow from './TablesNarrow'
 import TablesWide from './TablesWide'
 
@@ -70,7 +72,7 @@ export default class Tables extends React.Component {
     const t = this.props.translations
 
     const toolbarStyle = this.props.responsiveState.greaterThan.xsmall
-      ? merge({}, styles.toolbar, styles.toolbarSmall)
+      ? Object.assign({}, styles.toolbar, styles.toolbarSmall)
       : styles.toolbar
 
     const listItems = this.props.filters.map(filter => (
