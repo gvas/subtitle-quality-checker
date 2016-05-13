@@ -1,6 +1,6 @@
-/*global TextDecoder*/
 import { createSelector } from 'reselect'
 import counterpart from 'counterpart'
+import { TextDecoder } from 'text-encoding'
 import * as locales from '../locales'
 import { lengthWithoutCRLF } from '../utils/stringUtils'
 import errorTypes from '../constants/errorTypes'

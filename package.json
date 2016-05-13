@@ -57,6 +57,7 @@
     "reselect": "^2.4.0",
     "sass-loader": "^3.1.2",
     "style-loader": "^0.13.0",
+    "text-encoding": "^0.6.0",
     "url-loader": "^0.5.7",
     "webpack": "^1.12.13"
   }
