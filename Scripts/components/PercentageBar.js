@@ -1,41 +1,30 @@
 ﻿import React, { PropTypes } from 'react'
-import Typography from 'material-ui/styles/typography'
 
-const getStyles = (props, context) => {
-  const theme = context.muiTheme
-
-  return {
-    svg: {
-      width: 100,
-      height: 100,
-      borderRadius: '50%',
-      transform: 'rotate(-90deg)',
-      fontFamily: theme.baseTheme.fontFamily,
-    },
-    text: {
-      transform: 'rotate(90deg)',
-      textAnchor: 'middle',
-    },
-    circle: {
-      fill: theme.baseTheme.palette.accent1Color,
-      stroke: theme.baseTheme.palette.primary1Color,
-      strokeWidth: 32,
-      strokeDasharray: `${props.percentage} 100`,
-    },
-    innerCircle: {
-      fill: 'white',
-    },
-    percentage: {
-      fill: Typography.textDarkBlack,
-      fontSize: 12,
-      alignmentBaseline: 'central',
-    },
-    percentSign: {
-      fill: Typography.textLightBlack,
-      fontSize: 6,
-      alignmentBaseline: 'baseline',
-    },
-  }
+const styles = {
+  svg: {
+    borderRadius: '50%',
+  },
+  circle: {
+    fill: 'none',
+    stroke: '#ff4081',
+    strokeWidth: 5,
+  },
+  arc: {
+    fill: 'none',
+    stroke: '#00bcd4',
+    strokeWidth: 5,
+  },
+  text: {
+    textAnchor: 'middle',
+  },
+  percentage: {
+    fill: 'rgba(0, 0, 0, 0.87)',
+    fontSize: 12,
+  },
+  percentSign: {
+    fill: 'rgba(0, 0, 0, 0.54)',
+    fontSize: 6,
+  },
 }
 
 export default class PercentageBar extends React.Component {
@@ -49,15 +38,25 @@ export default class PercentageBar extends React.Component {
   }
 
   render() {
-    const styles = getStyles(this.props, this.context)
+    const rad = this.props.percentage * 2 * Math.PI / 100
+    const largeArcFlag = this.props.percentage <= 50 ? 0 : 1
+    const sweepFlag = 1
+
+    const r = 16
+    const cX = r
+    const cY = r
+    const startX = r
+    const startY = 0
+    const endX = cX + r * Math.sin(rad)
+    const endY = cY - r * Math.cos(rad)
 
     return (
-      <svg viewBox="0 0 32 32" style={styles.svg}>
-        <circle r="50%" cx="50%" cy="50%" style={styles.circle} />
-        <circle r="10" cx="50%" cy="50%" style={styles.innerCircle} />
-        <text x="50%" y="-50%" style={styles.text}>
-          <tspan style={styles.percentage}>{this.props.percentage}</tspan>
-          <tspan style={styles.percentSign}>%</tspan>
+      <svg width="100" height="100" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style={styles.svg}>
+        <circle r={r} cx={cX} cy={cY} style={styles.circle} />
+        <path d={`M ${startX} ${startY} A ${cX} ${cY} 0 ${largeArcFlag} ${sweepFlag} ${endX} ${endY}`} style={styles.arc} />
+        <text x={r} y={r} style={styles.text}>
+          <tspan dy="0.5ex" style={styles.percentage}>{this.props.percentage}</tspan>
+          <tspan dy="-1ex" style={styles.percentSign}>%</tspan>
         </text>
       </svg>
     )
