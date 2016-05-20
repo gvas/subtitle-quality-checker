@@ -1,9 +1,12 @@
-public class HostingOptions
+namespace SubtitleEvaluation.Web.Services
 {
-    public HostingOptions()
+    public class HostingOptions
     {
-        VirtualApplicationRootPath = "/";
-    }
+        public HostingOptions()
+        {
+            VirtualApplicationRootPath = "";
+        }
 
-    public string VirtualApplicationRootPath { get; set; }
+        public string VirtualApplicationRootPath { get; set; }
+    }
 }

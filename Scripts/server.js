@@ -5,6 +5,7 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import { Provider } from 'react-redux'
 import Routes from './components/Routes'
 import configureStore from './store/configureStore'
+import {restoreSettings} from './actions/index'
 
 export function RenderView(path, model) {
   const result = {
@@ -17,6 +18,8 @@ export function RenderView(path, model) {
     entries: [path],
   })
   const store = configureStore(memoryHistory)
+  store.dispatch(restoreSettings(model.SerializedSettings))
+
   const history = syncHistoryWithStore(memoryHistory, store)
 
   match({ history, routes: Routes, location: path }, (err, redirect, props) => {
@@ -26,6 +29,7 @@ export function RenderView(path, model) {
       result.status = 500
     } else if (props) {
       // TODO: handle not found
+
       // material-ui needs the user agent for auto-prefixing its styles
       const createElement = (Component, props) => {
         return <Component {...props} userAgent={model.UserAgent} />
@@ -36,14 +40,14 @@ export function RenderView(path, model) {
         </Provider>
       )
       result.status = 200
-      result.html = renderPage(appHtml, model.VirtualApplicationRootPath)
+      result.html = renderPage(appHtml, model.VirtualApplicationRootPath, store.getState())
     }
   });
 
   return result;
 }
 
-function renderPage(appHtml, virtualApplicationRootPath) {
+function renderPage(appHtml, virtualApplicationRootPath, serverState) {
   return `
     <!doctype html>
     <html>
@@ -64,9 +68,10 @@ function renderPage(appHtml, virtualApplicationRootPath) {
 
       <div id="app">${appHtml}</div>
 
+      <script>window.SERVER_STATE = ${JSON.stringify(serverState)}</script>
       <script>var INITIAL_STATE = { virtualApplicationRootPath: "${virtualApplicationRootPath}" }</script>
-      <script src="${virtualApplicationRootPath.slice(-1) === '/' ? virtualApplicationRootPath : virtualApplicationRootPath + '/'}vendors.bundle.js"></script>
-      <script src="${virtualApplicationRootPath.slice(-1) === '/' ? virtualApplicationRootPath : virtualApplicationRootPath + '/'}client.bundle.js"></script>
+      <script src="${virtualApplicationRootPath}/vendors.bundle.js"></script>
+      <script src="${virtualApplicationRootPath}/client.bundle.js"></script>
     </body>
     </html>
   `

@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 
-namespace SubtitleEvalution.Web.Services
+namespace SubtitleEvaluation.Web.Services
 {
     public class ReactEnvironmentInitializer : IJsEngineInitializer
     {

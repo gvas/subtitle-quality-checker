@@ -7,8 +7,8 @@ module.exports = {
   context: path.join(__dirname, 'Scripts'),
 
   entry: {
-    'server': './server',
-    'client': './client',
+    'server': ['babel-polyfill', './server'],
+    'client': ['babel-polyfill', './client'],
     'vendors': [
       'material-ui/AppBar',
       'material-ui/Drawer',

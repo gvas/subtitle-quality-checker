@@ -1,5 +1,6 @@
 /*eslint-env node, browser*/
 import { types } from '../actions/index'
+import Cookies from 'js-cookie'
 
 /**
  * Creates a reducer function for a select-type setting.
@@ -27,33 +28,42 @@ export default (params) => {
   return (state = initialState, action) => {
     switch (action.type) {
       case types.RESTORE_SETTINGS: {
-        const restored = localStorage.getItem(params.name)
-        return restored
+        const settings = action.serializedSettings.split('|')
+        const idx = settings.findIndex(el => el.startsWith(params.shortName + ':'))
+        return idx >= 0
           ? {
             ...state,
-            value: restored,
+            value: settings[idx].substring((params.shortName + ':').length),
           }
           : state
       }
       case params.actions.openEditor:
         return {
-        ...state,
+           ...state,
           isEdited: true,
           editedValue: state.value,
         }
       case params.actions.change:
         return {
-        ...state,
+           ...state,
           editedValue: action.payload,
         }
       case params.actions.rollback:
         return {
-        ...state,
+          ...state,
           isEdited: false,
           editedValue: state.value,
         }
       case params.actions.submit: {
-        localStorage.setItem(params.name, state.editedValue)
+        const settings = (Cookies.get('settings') || '').split('|')
+        const idx = settings.findIndex(el => el.startsWith(params.shortName + ':'))
+        const cookieValue = [params.shortName, state.editedValue].join(':')
+        if (idx >= 0) {
+          settings[idx] = cookieValue
+        } else {
+          settings.push(cookieValue)
+        }
+        Cookies.set('settings', settings.join('|'))
 
         return {
           ...state,

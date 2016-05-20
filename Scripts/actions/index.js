@@ -300,6 +300,7 @@ export const submitLocalization = () => ({
   type: types.SUBMIT_LOCALIZATION,
 })
 
-export const restoreSettings = () => ({
+export const restoreSettings = (serializedSettings) => ({
   type: types.RESTORE_SETTINGS,
+  serializedSettings: serializedSettings,
 })

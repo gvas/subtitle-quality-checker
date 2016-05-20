@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.OptionsModel;
+using SubtitleEvaluation.Web.Services;
+using SubtitleEvaluation.Web.Internal;
 
-namespace SubtitleEvalution.Web.Controllers
+namespace SubtitleEvaluation.Web.Controllers
 {
     public class HomeController : Controller
     {
@@ -14,12 +16,11 @@ namespace SubtitleEvalution.Web.Controllers
 
         public IActionResult Index()
         {
+            var viewModel = new SubtitleEvaluation.Web.ViewModels.Home.Base();
+            PopulateBaseViewModel(viewModel);
+
             // {auto} is a magic string in the JavaScriptViewEngine library
-            return View("js-{auto}", new SubtitleEvaluation.Web.ViewModels.Home.Index
-            {
-                VirtualApplicationRootPath = hostingOptions.VirtualApplicationRootPath,
-                UserAgent = Request.Headers["User-Agent"]
-            });
+            return View("js-{auto}", viewModel);
         }
 
         [Route("results")]
@@ -31,21 +32,28 @@ namespace SubtitleEvalution.Web.Controllers
         [Route("settings")]
         public IActionResult Settings()
         {
-            return View("js-{auto}", new SubtitleEvaluation.Web.ViewModels.Home.Settings
-            {
-                VirtualApplicationRootPath = hostingOptions.VirtualApplicationRootPath,
-                UserAgent = Request.Headers["User-Agent"]
-            });
+            var viewModel = new SubtitleEvaluation.Web.ViewModels.Home.Base();
+            PopulateBaseViewModel(viewModel);
+
+            // {auto} is a magic string in the JavaScriptViewEngine library
+            return View("js-{auto}", viewModel);
         }
 
         [Route("about")]
         public IActionResult About()
         {
-            return View("js-{auto}", new SubtitleEvaluation.Web.ViewModels.Home.About
-            {
-                VirtualApplicationRootPath = hostingOptions.VirtualApplicationRootPath,
-                UserAgent = Request.Headers["User-Agent"]
-            });
+            var viewModel = new SubtitleEvaluation.Web.ViewModels.Home.Base();
+            PopulateBaseViewModel(viewModel);
+
+            // {auto} is a magic string in the JavaScriptViewEngine library
+            return View("js-{auto}", viewModel);
+        }
+
+        private void PopulateBaseViewModel(SubtitleEvaluation.Web.ViewModels.Home.Base viewModel)
+        {
+            viewModel.VirtualApplicationRootPath = hostingOptions.VirtualApplicationRootPath;
+            viewModel.UserAgent = Request.Headers["User-Agent"];
+            viewModel.SerializedSettings = Request.HttpContext.Request.Cookies[Constants.SETTINGS_COOKIE_NAME];
         }
     }
 }

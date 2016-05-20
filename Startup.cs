@@ -4,13 +4,14 @@ using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using SubtitleEvalution.Web.Services;
+using SubtitleEvaluation.Web.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.OptionsModel;
 
-namespace SubtitleEvalution.Web
+namespace SubtitleEvaluation.Web
 {
     public class Startup
     {
@@ -49,14 +50,14 @@ namespace SubtitleEvalution.Web
               .Configure<HostingOptions>(Configuration);
         }
 
-        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IHostingEnvironment env, IOptions<HostingOptions> optionsAccessor)
         {
-            var virtualPath = Environment.GetEnvironmentVariable("VirtualApplicationRootPath");
+            var options = optionsAccessor.Value;
 
-            if (!string.IsNullOrEmpty(virtualPath) && virtualPath != "/")
+            if (options.VirtualApplicationRootPath != "")
             {
                 // workaround for bug in hosting app in IIS virtual directory https://github.com/aspnet/IISIntegration/issues/14#issuecomment-190574696
-                app.Map(virtualPath, (app1) => this.Configure1(app1, loggerFactory, env));
+                app.Map(options.VirtualApplicationRootPath, (app1) => this.Configure1(app1, loggerFactory, env));
             }
             else
             {

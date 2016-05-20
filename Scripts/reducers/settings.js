@@ -6,6 +6,7 @@ import {types as actionTypes} from '../actions/index'
 const settings = combineReducers({
   localization: createSelectSettingReducer({
     name: 'locale',
+    shortName: 'L',
     initialValue: 'en',
     actions: {
       openEditor: actionTypes.OPEN_LOCALIZATION_EDITOR,
@@ -16,6 +17,7 @@ const settings = combineReducers({
   }),
   encoding: createSelectSettingReducer({
     name: 'encoding',
+    shortName: 'E',
     initialValue: 'utf-8',
     actions: {
       openEditor: actionTypes.OPEN_ENCODING_EDITOR,
@@ -26,6 +28,7 @@ const settings = combineReducers({
   }),
   maxRowLength: createNumericalSettingReducer({
     name: 'maxRowLength',
+    shortName: 'MAXRL',
     initialValue: 40,
     actions: {
       openEditor: actionTypes.OPEN_MAX_ROW_LENGTH_EDITOR,
@@ -36,6 +39,7 @@ const settings = combineReducers({
   }),
   maxRowCount: createNumericalSettingReducer({
     name: 'maxRowCount',
+    shortName: 'MAXRC',
     initialValue: 2,
     actions: {
       openEditor: actionTypes.OPEN_MAX_ROW_COUNT_EDITOR,
@@ -46,6 +50,7 @@ const settings = combineReducers({
   }),
   maxCharCount: createNumericalSettingReducer({
     name: 'maxCharCount',
+    shortName: 'MAXCC',
     initialValue: 80,
     actions: {
       openEditor: actionTypes.OPEN_MAX_CHAR_COUNT_EDITOR,
@@ -56,6 +61,7 @@ const settings = combineReducers({
   }),
   maxDurationMs: createNumericalSettingReducer({
     name: 'maxDurationMs',
+    shortName: 'MAXD',
     initialValue: 5000,
     actions: {
       openEditor: actionTypes.OPEN_MAX_DURATION_MS_EDITOR,
@@ -66,6 +72,7 @@ const settings = combineReducers({
   }),
   maxPauseMs: createNumericalSettingReducer({
     name: 'maxPauseMs',
+    shortName: 'MAXP',
     initialValue: 1000,
     actions: {
       openEditor: actionTypes.OPEN_MAX_PAUSE_MS_EDITOR,
@@ -76,6 +83,7 @@ const settings = combineReducers({
   }),
   minCps: createNumericalSettingReducer({
     name: 'minCps',
+    shortName: 'MINC',
     initialValue: 8,
     actions: {
       openEditor: actionTypes.OPEN_MIN_CPS_EDITOR,
@@ -86,6 +94,7 @@ const settings = combineReducers({
   }),
   maxCps: createNumericalSettingReducer({
     name: 'maxCps',
+    shortName: 'MAXC',
     initialValue: 25,
     actions: {
       openEditor: actionTypes.OPEN_MAX_CPS_EDITOR,
@@ -96,6 +105,7 @@ const settings = combineReducers({
   }),
   minPauseMs: createNumericalSettingReducer({
     name: 'minPauseMs',
+    shortName: 'MINP',
     initialValue: 30,
     actions: {
       openEditor: actionTypes.OPEN_MIN_PAUSE_MS_EDITOR,
@@ -106,6 +116,7 @@ const settings = combineReducers({
   }),
   minDurationMs: createNumericalSettingReducer({
     name: 'minDurationMs',
+    shortName: 'MIND',
     initialValue: 1000,
     actions: {
       openEditor: actionTypes.OPEN_MIN_DURATION_MS_EDITOR,
