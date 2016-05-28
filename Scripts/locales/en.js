@@ -39,7 +39,11 @@ export default {
       settings: 'Settings',
       about: 'About',
     },
-    selectSettingsEditor: {
+    numericalSettingEditor: {
+      cancel: 'Cancel',
+      ok: 'OK',
+    },
+    selectSettingEditor: {
       cancel: 'Cancel',
       ok: 'OK',
     },

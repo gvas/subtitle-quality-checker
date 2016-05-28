@@ -1,44 +1,38 @@
 import { connect } from 'react-redux'
-import {
-  openEncodingEditor,
-  openMaxRowCountEditor,
-  openMaxCharCountEditor,
-  openMaxDurationMsEditor,
-  openMaxPauseMsEditor,
-  openMinCpsEditor,
-  openMaxCpsEditor,
-  openMinPauseMsEditor,
-  openMinDurationMsEditor,
-  openLocalizationEditor,
-} from '../actions/index'
+import { openSettingEditor } from '../actions/index'
 import SettingsPage from '../components/SettingsPage'
 import { getTranslations } from '../selectors/index'
+import locales from '../constants/locales'
+import encodings from '../constants/encodings'
 
-const mapStateToProps = (state) => ({
-  translations: getTranslations(state),
-  encoding: state.settings.encoding.value,
-  maxRowCount: state.settings.maxRowCount.value,
-  maxCharCount: state.settings.maxCharCount.value,
-  maxDurationMs: state.settings.maxDurationMs.value,
-  maxPauseMs: state.settings.maxPauseMs.value,
-  minCps: state.settings.minCps.value,
-  maxCps: state.settings.maxCps.value,
-  minPauseMs: state.settings.minPauseMs.value,
-  minDurationMs: state.settings.minDurationMs.value,
-  localization: state.settings.localization.value,
-})
+const mapStateToProps = (state) => {
+  const t = getTranslations(state)
+
+  return {
+    translations: t,
+    maxRowCount: state.settings.maxRowCount.value,
+    maxCharCount: state.settings.maxCharCount.value,
+    maxDurationMs: state.settings.maxDurationMs.value,
+    maxPauseMs: state.settings.maxPauseMs.value,
+    minCps: state.settings.minCps.value,
+    maxCps: state.settings.maxCps.value,
+    minPauseMs: state.settings.minPauseMs.value,
+    minDurationMs: state.settings.minDurationMs.value,
+    encoding: state.settings.encoding.value,
+    locale: state.settings.locale.value,
+    locales: locales.map(locale => ({
+      label: t.translate(locale, { scope: 'app.locales' }),
+      value: locale,
+    })),
+    encodings: encodings.map(encoding => ({
+      label: t.translate(encoding, { scope: 'app.encodings' }),
+      value: encoding,
+    })),
+  }
+}
 
 const mapDispatchToProps = {
-  openEncodingEditor,
-  openMaxRowCountEditor,
-  openMaxCharCountEditor,
-  openMaxDurationMsEditor,
-  openMaxPauseMsEditor,
-  openMinCpsEditor,
-  openMaxCpsEditor,
-  openMinPauseMsEditor,
-  openMinDurationMsEditor,
-  openLocalizationEditor,
+  openSettingEditor,
 }
 
 const SettingsPageContainer = connect(

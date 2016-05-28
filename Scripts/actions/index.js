@@ -9,52 +9,16 @@ export const types = {
   READ_SUBTITLE_COMPLETED: 'READ_SUBTITLE_COMPLETED',
   READ_SUBTITLE_FAILED: 'READ_SUBTITLE_FAILED',
   DELETE_SNACK: 'DELETE_SNACK',
-  OPEN_ENCODING_EDITOR: 'OPEN_ENCODING_EDITOR',
-  CHANGE_ENCODING: 'CHANGE_ENCODING',
-  ROLLBACK_ENCODING: 'ROLLBACK_ENCODING',
-  SUBMIT_ENCODING: 'SUBMIT_ENCODING',
-  OPEN_MAX_ROW_LENGTH_EDITOR: 'OPEN_MAX_ROW_LENGTH_EDITOR',
-  CHANGE_MAX_ROW_LENGTH: 'CHANGE_MAX_ROW_LENGTH',
-  ROLLBACK_MAX_ROW_LENGTH: 'ROLLBACK_MAX_ROW_LENGTH',
-  SUBMIT_MAX_ROW_LENGTH: 'SUBMIT_MAX_ROW_LENGTH',
-  OPEN_MAX_ROW_COUNT_EDITOR: 'OPEN_MAX_ROW_COUNT_EDITOR',
-  CHANGE_MAX_ROW_COUNT: 'CHANGE_MAX_ROW_COUNT',
-  ROLLBACK_MAX_ROW_COUNT: 'ROLLBACK_MAX_ROW_COUNT',
-  SUBMIT_MAX_ROW_COUNT: 'SUBMIT_MAX_ROW_COUNT',
-  OPEN_MAX_CHAR_COUNT_EDITOR: 'OPEN_MAX_CHAR_COUNT_EDITOR',
-  CHANGE_MAX_CHAR_COUNT: 'CHANGE_MAX_CHAR_COUNT',
-  ROLLBACK_MAX_CHAR_COUNT: 'ROLLBACK_MAX_CHAR_COUNT',
-  SUBMIT_MAX_CHAR_COUNT: 'SUBMIT_MAX_CHAR_COUNT',
-  OPEN_MAX_DURATION_MS_EDITOR: 'OPEN_MAX_DURATION_MS_EDITOR',
-  CHANGE_MAX_DURATION_MS: 'CHANGE_MAX_DURATION_MS',
-  ROLLBACK_MAX_DURATION_MS: 'ROLLBACK_MAX_DURATION_MS',
-  SUBMIT_MAX_DURATION_MS: 'SUBMIT_MAX_DURATION_MS',
-  OPEN_MAX_PAUSE_MS_EDITOR: 'OPEN_MAX_PAUSE_MS_EDITOR',
-  CHANGE_MAX_PAUSE_MS: 'CHANGE_MAX_PAUSE_MS',
-  ROLLBACK_MAX_PAUSE_MS: 'ROLLBACK_MAX_PAUSE_MS',
-  SUBMIT_MAX_PAUSE_MS: 'SUBMIT_MAX_PAUSE_MS',
-  OPEN_MIN_CPS_EDITOR: 'OPEN_MIN_CPS_EDITOR',
-  CHANGE_MIN_CPS: 'CHANGE_MIN_CPS',
-  ROLLBACK_MIN_CPS: 'ROLLBACK_MIN_CPS',
-  SUBMIT_MIN_CPS: 'SUBMIT_MIN_CPS',
-  OPEN_MAX_CPS_EDITOR: 'OPEN_MAX_CPS_EDITOR',
-  CHANGE_MAX_CPS: 'CHANGE_MAX_CPS',
-  ROLLBACK_MAX_CPS: 'ROLLBACK_MAX_CPS',
-  SUBMIT_MAX_CPS: 'SUBMIT_MAX_CPS',
-  OPEN_MIN_PAUSE_MS_EDITOR: 'OPEN_MIN_PAUSE_MS_EDITOR',
-  CHANGE_MIN_PAUSE_MS: 'CHANGE_MIN_PAUSE_MS',
-  ROLLBACK_MIN_PAUSE_MS: 'ROLLBACK_MIN_PAUSE_MS',
-  SUBMIT_MIN_PAUSE_MS: 'SUBMIT_MIN_PAUSE_MS',
-  OPEN_MIN_DURATION_MS_EDITOR: 'OPEN_MIN_DURATION_MS_EDITOR',
-  CHANGE_MIN_DURATION_MS: 'CHANGE_MIN_DURATION_MS',
-  ROLLBACK_MIN_DURATION_MS: 'ROLLBACK_MIN_DURATION_MS',
-  SUBMIT_MIN_DURATION_MS: 'SUBMIT_MIN_DURATION_MS',
+  OPEN_SETTING_EDITOR: 'OPEN_SETTING_EDITOR',
+  CHANGE_SETTING: 'CHANGE_SETTING',
+  ROLLBACK_SETTING: 'ROLLBACK_SETTING',
+  SUBMIT_SETTING: 'SUBMIT_SETTING',
+  SET_SETTING_VALUE: 'SET_SETTING_VALUE',
+  SET_SETTING_VALIDATION_ERROR: 'SET_SETTING_VALIDATION_ERROR',
   TOGGLE_FILTER: 'TOGGLE_FILTER',
-  OPEN_LOCALIZATION_EDITOR: 'OPEN_LOCALIZATION_EDITOR',
-  CHANGE_LOCALIZATION: 'CHANGE_LOCALIZATION',
-  ROLLBACK_LOCALIZATION: 'ROLLBACK_LOCALIZATION',
-  SUBMIT_LOCALIZATION: 'SUBMIT_LOCALIZATION',
-  RESTORE_SETTINGS: 'RESTORE_SETTINGS',
+  PERSIST_VALUE: 'PERSIST_VALUE',
+  RESTORE_VALUES: 'RESTORE_VALUES',
+  RESTORE_VALUE: 'RESTORE_VALUE',
 }
 
 export function calculateResponsiveState() {
@@ -108,199 +72,77 @@ export const deleteSnack = () => ({
   type: types.DELETE_SNACK,
 })
 
-export const openEncodingEditor = () => ({
-  type: types.OPEN_ENCODING_EDITOR,
+export const openSettingEditor = name => ({
+  type: types.OPEN_SETTING_EDITOR,
+  payload: name,
 })
 
-export const changeEncoding = (encoding) => ({
-  type: types.CHANGE_ENCODING,
-  payload: encoding,
+export const changeSetting = (name, value) => ({
+  type: types.CHANGE_SETTING,
+  payload: {
+    name,
+    value,
+  },
 })
 
-export const rollbackEncoding = () => ({
-  type: types.ROLLBACK_ENCODING,
+export const rollbackSetting = name => ({
+  type: types.ROLLBACK_SETTING,
+  payload: name,
 })
 
-export const submitEncoding = () => ({
-  type: types.SUBMIT_ENCODING,
+export const setSettingValue = (name, value) => ({
+  type: types.SET_SETTING_VALUE,
+  payload: {
+    name,
+    value,
+  },
 })
 
-export const openMaxRowLengthEditor = () => ({
-  type: types.OPEN_MAX_ROW_LENGTH_EDITOR,
+export const setSettingValidationError = (name, validationError) => ({
+  type: types.SET_SETTING_VALIDATION_ERROR,
+  payload: {
+    name,
+    validationError,
+  },
 })
 
-export const changeMaxRowLength = (maxRowLength) => ({
-  type: types.CHANGE_MAX_ROW_LENGTH,
-  payload: maxRowLength,
-})
+export const submitSetting = (name, value, validationFn) =>
+  dispatch => {
+    const validationError = validationFn
+      ? validationFn(value)
+      : null
 
-export const rollbackMaxRowLength = () => ({
-  type: types.ROLLBACK_MAX_ROW_LENGTH,
-})
+    if (validationError === null)
+    {
+      dispatch(persistValue(name, value))
+      dispatch(setSettingValue(name, value))
+    } else {
+      dispatch(setSettingValidationError(name, validationError))
+    }
+  }
 
-export const submitMaxRowLength = () => ({
-  type: types.SUBMIT_MAX_ROW_LENGTH,
-})
-
-export const openMaxRowCountEditor = () => ({
-  type: types.OPEN_MAX_ROW_COUNT_EDITOR,
-})
-
-export const changeMaxRowCount = (maxRowCount) => ({
-  type: types.CHANGE_MAX_ROW_COUNT,
-  payload: maxRowCount,
-})
-
-export const rollbackMaxRowCount = () => ({
-  type: types.ROLLBACK_MAX_ROW_COUNT,
-})
-
-export const submitMaxRowCount = () => ({
-  type: types.SUBMIT_MAX_ROW_COUNT,
-})
-
-export const openMaxCharCountEditor = () => ({
-  type: types.OPEN_MAX_CHAR_COUNT_EDITOR,
-})
-
-export const changeMaxCharCount = (maxCharCount) => ({
-  type: types.CHANGE_MAX_CHAR_COUNT,
-  payload: maxCharCount,
-})
-
-export const rollbackMaxCharCount = () => ({
-  type: types.ROLLBACK_MAX_CHAR_COUNT,
-})
-
-export const submitMaxCharCount = () => ({
-  type: types.SUBMIT_MAX_CHAR_COUNT,
-})
-
-export const openMaxDurationMsEditor = () => ({
-  type: types.OPEN_MAX_DURATION_MS_EDITOR,
-})
-
-export const changeMaxDurationMs = (maxDurationMs) => ({
-  type: types.CHANGE_MAX_DURATION_MS,
-  payload: maxDurationMs,
-})
-
-export const rollbackMaxDurationMs = () => ({
-  type: types.ROLLBACK_MAX_DURATION_MS,
-})
-
-export const submitMaxDurationMs = () => ({
-  type: types.SUBMIT_MAX_DURATION_MS,
-})
-
-export const openMaxPauseMsEditor = () => ({
-  type: types.OPEN_MAX_PAUSE_MS_EDITOR,
-})
-
-export const changeMaxPauseMs = (maxPauseMs) => ({
-  type: types.CHANGE_MAX_PAUSE_MS,
-  payload: maxPauseMs,
-})
-
-export const rollbackMaxPauseMs = () => ({
-  type: types.ROLLBACK_MAX_PAUSE_MS,
-})
-
-export const submitMaxPauseMs = () => ({
-  type: types.SUBMIT_MAX_PAUSE_MS,
-})
-
-export const openMinCpsEditor = () => ({
-  type: types.OPEN_MIN_CPS_EDITOR,
-})
-
-export const changeMinCps = (minCps) => ({
-  type: types.CHANGE_MIN_CPS,
-  payload: minCps,
-})
-
-export const rollbackMinCps = () => ({
-  type: types.ROLLBACK_MIN_CPS,
-})
-
-export const submitMinCps = () => ({
-  type: types.SUBMIT_MIN_CPS,
-})
-
-export const openMaxCpsEditor = () => ({
-  type: types.OPEN_MAX_CPS_EDITOR,
-})
-
-export const changeMaxCps = (minCps) => ({
-  type: types.CHANGE_MAX_CPS,
-  payload: minCps,
-})
-
-export const rollbackMaxCps = () => ({
-  type: types.ROLLBACK_MAX_CPS,
-})
-
-export const submitMaxCps = () => ({
-  type: types.SUBMIT_MAX_CPS,
-})
-
-export const openMinPauseMsEditor = () => ({
-  type: types.OPEN_MIN_PAUSE_MS_EDITOR,
-})
-
-export const changeMinPauseMs = (minPauseMs) => ({
-  type: types.CHANGE_MIN_PAUSE_MS,
-  payload: minPauseMs,
-})
-
-export const rollbackMinPauseMs = () => ({
-  type: types.ROLLBACK_MIN_PAUSE_MS,
-})
-
-export const submitMinPauseMs = () => ({
-  type: types.SUBMIT_MIN_PAUSE_MS,
-})
-
-export const openMinDurationMsEditor = () => ({
-  type: types.OPEN_MIN_DURATION_MS_EDITOR,
-})
-
-export const changeMinDurationMs = (minDurationMs) => ({
-  type: types.CHANGE_MIN_DURATION_MS,
-  payload: minDurationMs,
-})
-
-export const rollbackMinDurationMs = () => ({
-  type: types.ROLLBACK_MIN_DURATION_MS,
-})
-
-export const submitMinDurationMs = () => ({
-  type: types.SUBMIT_MIN_DURATION_MS,
-})
-
-export const toggleFilter = (errorType) => ({
+export const toggleFilter = errorType => ({
   type: types.TOGGLE_FILTER,
   payload: errorType,
 })
 
-export const openLocalizationEditor = () => ({
-  type: types.OPEN_LOCALIZATION_EDITOR,
+export const persistValue = (key, value) => ({
+  type: types.PERSIST_VALUE,
+  payload: {
+    key: key,
+    value: value,
+  },
 })
 
-export const changeLocalization = (locale) => ({
-  type: types.CHANGE_LOCALIZATION,
-  payload: locale,
+export const restoreValues = persistedValues => ({
+  type: types.RESTORE_VALUES,
+  payload: persistedValues,
 })
 
-export const rollbackLocalization = () => ({
-  type: types.ROLLBACK_LOCALIZATION,
-})
-
-export const submitLocalization = () => ({
-  type: types.SUBMIT_LOCALIZATION,
-})
-
-export const restoreSettings = (serializedSettings) => ({
-  type: types.RESTORE_SETTINGS,
-  serializedSettings: serializedSettings,
+export const restoreValue = (key, value) => ({
+  type: types.RESTORE_VALUE,
+  payload: {
+    key: key,
+    value: value,
+  },
 })

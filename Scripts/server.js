@@ -5,7 +5,7 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import { Provider } from 'react-redux'
 import Routes from './components/Routes'
 import configureStore from './store/configureStore'
-import {restoreSettings} from './actions/index'
+import { restoreValues } from './actions/index'
 
 export function RenderView(path, model) {
   const result = {
@@ -18,7 +18,10 @@ export function RenderView(path, model) {
     entries: [path],
   })
   const store = configureStore(memoryHistory)
-  store.dispatch(restoreSettings(model.SerializedSettings))
+  const persistedValues = model.SerializedSettings
+    ? JSON.parse(model.SerializedSettings)
+    : {}
+  store.dispatch(restoreValues(persistedValues))
 
   const history = syncHistoryWithStore(memoryHistory, store)
 

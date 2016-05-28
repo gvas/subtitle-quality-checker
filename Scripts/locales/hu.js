@@ -39,7 +39,11 @@ export default {
       settings: 'Beállítások',
       about: 'Névjegy',
     },
-    selectSettingsEditor: {
+    numericalSettingEditor: {
+      cancel: 'Mégsem',
+      ok: 'OK',
+    },
+    selectSettingEditor: {
       cancel: 'Mégsem',
       ok: 'OK',
     },

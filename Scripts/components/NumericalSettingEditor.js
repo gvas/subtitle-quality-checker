@@ -21,37 +21,52 @@ export default class NumericalSettingEditor extends React.Component {
   }
 
   static propTypes = {
+    translations: PropTypes.shape({
+      translate: PropTypes.func.isRequired,
+    }).isRequired,
+    name: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
     errorText: PropTypes.string,
     isOpen: PropTypes.bool.isRequired,
     value: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
-    onRollback: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired,
+    validationFn: PropTypes.func.isRequired,
+    changeSetting: PropTypes.func.isRequired,
+    rollbackSetting: PropTypes.func.isRequired,
+    submitSetting: PropTypes.func.isRequired,
   }
 
-  onChange = (event) => {
-    this.props.onChange(event.target.value)
+  onChange = event => {
+    this.props.changeSetting(this.props.name, event.target.value)
   }
 
-  onKeyDown = (event) => {
+  onRollback = () => {
+    this.props.rollbackSetting(this.props.name)
+  }
+
+  onSubmit = () => {
+    this.props.submitSetting(this.props.name, this.props.value, this.props.validationFn)
+  }
+
+  onKeyDown = event => {
     if (event.keyCode === 13) {
-      this.props.onSubmit()
+      this.props.submitSetting(this.props.name, this.props.value, this.props.validationFn)
     }
   }
 
   render() {
+    const t = this.props.translations
+
     const actions = [
       <FlatButton
-        label="Mégsem"
+        label={t.translate('app.numericalSettingEditor.cancel')}
         secondary={true}
-        onTouchTap={this.props.onRollback}
+        onTouchTap={this.onRollback}
         />,
       <FlatButton
-        label="OK"
+        label={t.translate('app.numericalSettingEditor.ok')}
         primary={true}
         keyboardFocused={true}
-        onTouchTap={this.props.onSubmit}
+        onTouchTap={this.onSubmit}
         />,
     ]
     return (

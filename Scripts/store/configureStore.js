@@ -5,11 +5,13 @@ import { routerMiddleware } from 'react-router-redux'
 import createLogger from 'redux-logger';
 import { createResponsiveStoreEnhancer } from 'redux-responsive'
 import rootReducer from '../reducers/index'
+import persistenceMiddleware from './persistenceMiddleware'
 
 export default function configureStore(history, initialState) {
   const middlewares = [
     thunkMiddleware,
     routerMiddleware(history),
+    persistenceMiddleware,
   ]
   if (typeof window === 'object') {
     // TODO: figure out how to use it on server side

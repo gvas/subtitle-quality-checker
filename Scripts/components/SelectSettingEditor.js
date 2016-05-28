@@ -18,6 +18,7 @@ const styles = {
 export default class SelectSettingEditor extends React.Component {
 
   static propTypes = {
+    name: PropTypes.string.isRequired,
     translations: PropTypes.shape({
       translate: PropTypes.func.isRequired,
     }).isRequired,
@@ -27,13 +28,21 @@ export default class SelectSettingEditor extends React.Component {
       label: PropTypes.string.isRequired,
       value: PropTypes.string.isRequired,
     })).isRequired,
-    onChange: PropTypes.func.isRequired,
-    onRollback: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired,
+    changeSetting: PropTypes.func.isRequired,
+    rollbackSetting: PropTypes.func.isRequired,
+    submitSetting: PropTypes.func.isRequired,
   }
 
-  onChange = (event) => {
-    this.props.onChange(event.target.value)
+  onChange = event => {
+    this.props.changeSetting(this.props.name, event.target.value)
+  }
+
+  onRollback = () => {
+    this.props.rollbackSetting(this.props.name)
+  }
+
+  onSubmit = () => {
+    this.props.submitSetting(this.props.name, this.props.value)
   }
 
   render() {
@@ -41,15 +50,15 @@ export default class SelectSettingEditor extends React.Component {
 
     const actions = [
       <FlatButton
-        label={t.translate('app.selectSettingsEditor.cancel')}
+        label={t.translate('app.selectSettingEditor.cancel')}
         secondary={true}
-        onTouchTap={this.props.onRollback}
+        onTouchTap={this.onRollback}
         />,
       <FlatButton
-        label={t.translate('app.selectSettingsEditor.ok')}
+        label={t.translate('app.selectSettingEditor.ok')}
         primary={true}
         keyboardFocused={true}
-        onTouchTap={this.props.onSubmit}
+        onTouchTap={this.onSubmit}
         />,
     ]
     return (

@@ -7,7 +7,7 @@ import errorTypes from '../constants/errorTypes'
 
 const getFileContent = (state) => state.appSpecific.fileContent
 const getEncoding = (state) => state.settings.encoding.value
-const getLocale = (state) => state.settings.localization.value
+const getLocale = (state) => state.settings.locale.value
 const getSettings = (state) => state.settings
 const getFilters = (state) => state.filters
 
