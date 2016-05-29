@@ -1,13 +1,12 @@
 import { connect } from 'react-redux'
 import Errors from '../components/Errors'
-import errorTypes from '../constants/errorTypes'
 import { getSubtitleErrors, getTranslations } from '../selectors/index'
 
 const getErrors = (state) => {
   const result = []
   const errors = getSubtitleErrors(state)
   for (let errorType in errors) {
-    if (errorType !== errorTypes.NO_PROBLEM && errors[errorType] > 0) {
+    if (errors[errorType] > 0) {
       result.push({
         errorType: errorType,
         count: errors[errorType],

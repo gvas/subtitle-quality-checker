@@ -12,7 +12,6 @@ export default {
       'windows-1250': 'windows-1250',
     },
     errorTypes: {
-      NO_PROBLEM: 'Problémamentes',
       MERGEABLE: 'Összevonható a következővel',
       TOO_LONG_ROWS: 'Túl hosszú sorok',
       TOO_MANY_CHARACTERS: 'Túl sok karakter',
@@ -72,6 +71,7 @@ export default {
     },
     tables: {
       title: 'Felirattáblák',
+      noFilter: 'Nincs szűrés',
     },
     tablesNarrow: {
       stats1: 'Kezdet / vég: %(startTimeMs)s -  %(endTimeMs)s',

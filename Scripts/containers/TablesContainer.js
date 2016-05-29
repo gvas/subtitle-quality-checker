@@ -1,34 +1,18 @@
 import { connect } from 'react-redux'
 import Tables from '../components/Tables'
-import { getFilteredTables, getSubtitleErrors, getTranslations } from '../selectors/index'
-import { toggleFilter } from '../actions/index'
-
-const getFilters = (state) => {
-  const result = []
-  const errors = getSubtitleErrors(state)
-  const filters = state.filters
-
-  for (let errorType in errors) {
-    if (errors[errorType] > 0) {
-      result.push({
-        errorType: errorType,
-        checked: filters[errorType],
-      })
-    }
-  }
-
-  return result
-}
+import { getFilteredTables, getTranslations, getSubtitleErrorTypes } from '../selectors/index'
+import { setFilter } from '../actions/index'
 
 const mapStateToProps = (state) => ({
   translations: getTranslations(state),
   filteredTables: getFilteredTables(state),
-  filters: getFilters(state),
+  filter: state.filter,
+  errorTypes: getSubtitleErrorTypes(state),
   responsiveState: state.browser,
 })
 
 const mapDispatchToProps = {
-  toggleFilter,
+  setFilter,
 }
 
 const TablesContainer = connect(

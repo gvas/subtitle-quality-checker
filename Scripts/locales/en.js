@@ -12,7 +12,6 @@ export default {
       'windows-1250': 'windows-1250',
     },
     errorTypes: {
-      NO_PROBLEM: 'Problem free',
       MERGEABLE: 'Mergeable with the next one',
       TOO_LONG_ROWS: 'Too long rows',
       TOO_MANY_CHARACTERS: 'Too many characters',
@@ -72,6 +71,7 @@ export default {
     },
     tables: {
       title: 'Tables',
+      noFilter: 'No filtering',
     },
     tablesNarrow: {
       stats1: 'Start / end: %(startTimeMs)s -  %(endTimeMs)s',

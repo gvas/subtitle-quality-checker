@@ -15,7 +15,7 @@ export const types = {
   SUBMIT_SETTING: 'SUBMIT_SETTING',
   SET_SETTING_VALUE: 'SET_SETTING_VALUE',
   SET_SETTING_VALIDATION_ERROR: 'SET_SETTING_VALIDATION_ERROR',
-  TOGGLE_FILTER: 'TOGGLE_FILTER',
+  SET_FILTER: 'SET_FILTER',
   PERSIST_VALUE: 'PERSIST_VALUE',
   RESTORE_VALUES: 'RESTORE_VALUES',
   RESTORE_VALUE: 'RESTORE_VALUE',
@@ -121,8 +121,8 @@ export const submitSetting = (name, value, validationFn) =>
     }
   }
 
-export const toggleFilter = errorType => ({
-  type: types.TOGGLE_FILTER,
+export const setFilter = errorType => ({
+  type: types.SET_FILTER,
   payload: errorType,
 })
 

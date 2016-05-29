@@ -38,7 +38,7 @@ const styles = {
     padding: 0,
   },
   filterMenuItem: {
-    paddingLeft: 72,
+    WebkitAppearance: 'initial',
   },
 }
 
@@ -56,16 +56,14 @@ export default class Tables extends React.Component {
         text: PropTypes.string.isRequired,
       })
     ).isRequired,
-    filters: PropTypes.arrayOf(PropTypes.shape({
-      errorType: PropTypes.string.isRequired,
-      checked: PropTypes.bool.isRequired,
-    })).isRequired,
+    filter: PropTypes.string,
+    errorTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
     responsiveState: PropTypes.object.isRequired,
-    toggleFilter: PropTypes.func.isRequired,
+    setFilter: PropTypes.func.isRequired,
   }
 
-  onToggleItem = (el, menuItem) => {
-    this.props.toggleFilter(menuItem.props.value)
+  onSetFilter = (el, menuItem) => {
+    this.props.setFilter(menuItem.props.value)
   }
 
   render() {
@@ -75,13 +73,12 @@ export default class Tables extends React.Component {
       ? Object.assign({}, styles.toolbar, styles.toolbarSmall)
       : styles.toolbar
 
-    const listItems = this.props.filters.map(filter => (
+    const listItems = this.props.errorTypes.map(errorType => (
       <MenuItem
-        key={filter.errorType}
-        value={filter.errorType}
-        primaryText={t.translate(filter.errorType, { scope: 'app.errorTypes' })}
-        checked={filter.checked}
-        innerDivStyle={styles.filterMenuItem} />
+        key={errorType}
+        value={errorType}
+        primaryText={t.translate(errorType, { scope: 'app.errorTypes' })}
+        style={styles.filterMenuItem} />
     ))
 
     return (
@@ -95,7 +92,13 @@ export default class Tables extends React.Component {
               anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
               targetOrigin={{ vertical: 'top', horizontal: 'right' }}
               iconButtonElement={<IconButton><ContentFilter /></IconButton>}
-              onItemTouchTap={this.onToggleItem}>
+              onItemTouchTap={this.onSetFilter}
+              value={this.props.filter}>
+              <MenuItem
+                key={null}
+                value={null}
+                primaryText={t.translate('app.tables.noFilter')}
+                style={styles.filterMenuItem} />
               {listItems}
             </IconMenu>
           </div>

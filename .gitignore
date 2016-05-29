@@ -1,5 +1,6 @@
 node_modules/
 wwwroot/
 bin/
+.vscode/
 
 project.lock.json

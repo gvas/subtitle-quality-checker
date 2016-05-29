@@ -9,7 +9,7 @@ const getFileContent = (state) => state.appSpecific.fileContent
 const getEncoding = (state) => state.settings.encoding.value
 const getLocale = (state) => state.settings.locale.value
 const getSettings = (state) => state.settings
-const getFilters = (state) => state.filters
+const getFilter = (state) => state.filter
 
 const parseTime = (time) => {
   const delimiter = /:|,/
@@ -66,17 +66,6 @@ const evaluateTables = (settings, tables) => {
     currentTable.errors[errorTypes.TOO_SHORT_PAUSE] =
       (nextTable !== null &&
         nextTable.startTimeMs - currentTable.endTimeMs < settings.minPauseMs.value)
-
-    currentTable.errors[errorTypes.NO_PROBLEM] =
-      !currentTable.errors[errorTypes.TOO_LONG_ROWS] &&
-      !currentTable.errors[errorTypes.MERGEABLE] &&
-      !currentTable.errors[errorTypes.TOO_MANY_CHARACTERS] &&
-      !currentTable.errors[errorTypes.TOO_MANY_ROWS] &&
-      !currentTable.errors[errorTypes.TOO_SHORT_DURATION] &&
-      !currentTable.errors[errorTypes.TOO_LONG_DURATION] &&
-      !currentTable.errors[errorTypes.TOO_LITTLE_CPS] &&
-      !currentTable.errors[errorTypes.TOO_BIG_CPS] &&
-      !currentTable.errors[errorTypes.TOO_SHORT_PAUSE]
   }
 }
 
@@ -108,16 +97,11 @@ export const getTables = createSelector(
 )
 
 export const getFilteredTables = createSelector(
-  [getFilters, getTables],
-  (filters, tables) => {
-    const checkedErrorTypes = []
-    for (let errorType in filters) {
-      if (filters[errorType]) {
-        checkedErrorTypes.push(errorType)
-      }
-    }
-    return tables.filter(table => checkedErrorTypes.some(errorType => table.errors[errorType]))
-  }
+  [getFilter, getTables],
+  (filter, tables) =>
+    filter === null
+      ? tables
+      : tables.filter(table => table.errors[filter])
 )
 
 export const getSubtitleErrors = createSelector(
@@ -141,9 +125,27 @@ export const getSubtitleErrors = createSelector(
   }
 )
 
-export const getGoodTablesCount = createSelector(
+export const getSubtitleErrorTypes = createSelector(
   [getSubtitleErrors],
-  errors => errors[errorTypes.NO_PROBLEM]
+  subtitleErrors => {
+    const result = []
+    for (let errorType in subtitleErrors) {
+      if (subtitleErrors[errorType]) {
+        result.push(errorType)
+      }
+    }
+    return result
+  }
+)
+
+export const getGoodTablesCount = createSelector(
+  [getTables],
+  tables =>
+    tables
+      .filter(table =>
+        Object.values(table.errors).every(hasError => !hasError)
+      )
+      .length
 )
 
 export const getBadTablesCount = createSelector(

@@ -3,7 +3,7 @@ import { routerReducer } from 'react-router-redux'
 import { createResponsiveStateReducer } from 'redux-responsive'
 import { types } from '../actions/index'
 import settings from './settings'
-import filters from './filters'
+import filter from './filter'
 
 const initialAppSpecificState = {
   isNavDrawerOpen: false,
@@ -57,7 +57,7 @@ const rootReducer = combineReducers({
     medium: 1280,
     large: 1920,
   }),
-  filters,
+  filter,
   routing: routerReducer,
   settings,
 })
