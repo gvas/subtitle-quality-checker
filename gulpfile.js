@@ -24,12 +24,12 @@ function makeWebPackConfig(dev) {
   return config;
 }
 
-gulp.task('dnu-restore-build', shell.task([
-  'dnu restore',
-  'dnu build',
+gulp.task('dotnet-restore-build', shell.task([
+  'dotnet restore',
+  'dotnet build',
 ]))
 
-gulp.task('dev', ['dnu-restore-build'], function () {
+gulp.task('dev', ['dotnet-restore-build'], function () {
   webpack(makeWebPackConfig(true), function (err, stats) {
     if (err) {
       throw new gutil.PluginError('webpack', err)
@@ -46,7 +46,7 @@ gulp.task('dev', ['dnu-restore-build'], function () {
   })
 })
 
-gulp.task('build', ['dnu-restore-build'], function (callback) {
+gulp.task('build', ['dotnet-restore-build'], function (callback) {
   webpack(makeWebPackConfig(false), function (err, stats) {
     if (err) {
       throw new gutil.PluginError('webpack', err)

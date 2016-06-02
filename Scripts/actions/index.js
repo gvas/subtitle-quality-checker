@@ -21,7 +21,7 @@ export const types = {
   RESTORE_VALUE: 'RESTORE_VALUE',
 }
 
-export function calculateResponsiveState() {
+export const calculateResponsiveState = () => {
   const {innerWidth, innerHeight, matchMedia} = window
   return {
     type: CALCULATE_RESPONSIVE_STATE,
@@ -39,17 +39,17 @@ export const closeNavigationDrawer = () => ({
   type: types.CLOSE_NAVIGATION_DRAWER,
 })
 
-export const readSubtitle = (file) => ({
+export const readSubtitle = file => ({
   type: types.READ_SUBTITLE,
   payload: file,
 })
 
-export const readSubtitleCompleted = (tables) => ({
+export const readSubtitleCompleted = tables => ({
   type: types.READ_SUBTITLE_COMPLETED,
   payload: tables,
 })
 
-export const readSubtitleFailed = (reason) => ({
+export const readSubtitleFailed = reason => ({
   type: types.READ_SUBTITLE_FAILED,
   payload: reason,
 })

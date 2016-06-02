@@ -7,19 +7,19 @@ import Routes from './components/Routes'
 import configureStore from './store/configureStore'
 import { restoreValues } from './actions/index'
 
-export function RenderView(path, model) {
+export function renderView(callback, path, model) {
   const result = {
     html: null,
     status: 404,
     redirect: null,
   }
   const memoryHistory = createMemoryHistory({
-    basename: model.VirtualApplicationRootPath,
-    entries: [path],
+    basename: model.virtualApplicationRootPath,
+    entries: [model.virtualApplicationRootPath + path],
   })
   const store = configureStore(memoryHistory)
-  const persistedValues = model.SerializedSettings
-    ? JSON.parse(model.SerializedSettings)
+  const persistedValues = model.serializedSettings
+    ? JSON.parse(model.serializedSettings)
     : {}
   store.dispatch(restoreValues(persistedValues))
 
@@ -35,7 +35,7 @@ export function RenderView(path, model) {
 
       // material-ui needs the user agent for auto-prefixing its styles
       const createElement = (Component, props) => {
-        return <Component {...props} userAgent={model.UserAgent} />
+        return <Component {...props} userAgent={model.userAgent} />
       }
       const appHtml = ReactDOM.renderToString(
         <Provider store={store}>
@@ -43,11 +43,11 @@ export function RenderView(path, model) {
         </Provider>
       )
       result.status = 200
-      result.html = renderPage(appHtml, model.VirtualApplicationRootPath, store.getState())
+      result.html = renderPage(appHtml, model.virtualApplicationRootPath, store.getState())
     }
-  });
 
-  return result;
+    callback(null, result)
+  });
 }
 
 function renderPage(appHtml, virtualApplicationRootPath, serverState) {
@@ -80,6 +80,6 @@ function renderPage(appHtml, virtualApplicationRootPath, serverState) {
   `
 }
 
-export function RenderPartialView() {
+export function renderPartialView() {
   throw Error('Not implemented.')
 }

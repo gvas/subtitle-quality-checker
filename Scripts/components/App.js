@@ -46,17 +46,15 @@ export default class App extends React.Component {
     muiTheme: PropTypes.object.isRequired,
   }
 
-  getChildContext() {
+  getChildContext = () => ({
     // material-ui needs the user agent for auto-prefixing its styles
-    return {
-      muiTheme: getMuiTheme(
-        lightBaseTheme,
-        {
-          userAgent: this.props.userAgent,
-        }
-      ),
-    }
-  }
+    muiTheme: getMuiTheme(
+      lightBaseTheme,
+      {
+        userAgent: this.props.userAgent,
+      }
+    ),
+  })
 
   render() {
     const contentContainerStyle = this.props.greaterThanMedium

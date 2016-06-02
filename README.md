@@ -8,4 +8,4 @@ Build
     npm install
     npm run build
 
-The `dnx web` command starts the Kestrel web server on port 5000.
+The `dotnet run` command starts the Kestrel web server on port 5000.
