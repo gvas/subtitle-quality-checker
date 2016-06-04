@@ -1,0 +1,42 @@
+version: 1.0.{build}
+
+os: Visual Studio 2015
+
+#configuration: Release
+
+shallow_clone: true
+
+environment:
+  deployment_password:
+    secure: i2xNSnZMjUY1cb6okh+wAKuE1Mq5QTT/soEB5fDHbQQ/kECcB8B5c9GAkQLh9x7Ua4PKEib0zeYsLOKduBb4zQ==
+
+init:
+- appveyor version
+
+#assembly_info:
+#  patch: true
+#  file: '**\AssemblyInfo.*'
+#  assembly_version: '{version}'
+#  assembly_file_version: '{version}'
+#  assembly_informational_version: '{version}'
+
+#before_build:
+#- set DNX_BUILD_VERSION=build-%APPVEYOR_BUILD_NUMBER%
+#- dnvm upgrade
+#- dnvm upgrade -r coreclr
+#- dnu restore
+
+build_script:
+- gulp build
+
+after_build:
+- dotnet publish --output publish --configuration Release
+- '"C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe" -verb:sync -source:IisApp="%APPVEYOR_BUILD_FOLDER%\publish" -dest:IisApp=subtitleevaluation,ComputerName=https://subtitleevaluation.scm.azurewebsites.net/msdeploy.axd,UserName=$SubtitleEvaluation,Password="%deployment_password%",AuthType=Basic -retryAttempts:2'
+
+test: off
+
+artifacts:
+- path: publish
+  name: Release
+  type: WebDeployPackage
+
