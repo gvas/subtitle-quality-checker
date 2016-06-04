@@ -21,6 +21,7 @@ init:
 #  assembly_informational_version: '{version}'
 
 before_build:
+- npm install -g gulp-cli
 - npm install
 
 build_script:
