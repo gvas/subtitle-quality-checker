@@ -2,8 +2,6 @@ version: 1.0.{build}
 
 os: Visual Studio 2015
 
-#configuration: Release
-
 shallow_clone: true
 
 environment:
