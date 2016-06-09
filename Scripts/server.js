@@ -73,7 +73,6 @@ function renderPage(appHtml, virtualApplicationRootPath, serverState) {
 
       <script>window.SERVER_STATE = ${JSON.stringify(serverState)}</script>
       <script>var INITIAL_STATE = { virtualApplicationRootPath: "${virtualApplicationRootPath}" }</script>
-      <script src="${virtualApplicationRootPath}/vendors.bundle.js"></script>
       <script src="${virtualApplicationRootPath}/client.bundle.js"></script>
     </body>
     </html>

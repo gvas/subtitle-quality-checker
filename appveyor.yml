@@ -9,24 +9,19 @@ environment:
     secure: i2xNSnZMjUY1cb6okh+wAKuE1Mq5QTT/soEB5fDHbQQ/kECcB8B5c9GAkQLh9x7Ua4PKEib0zeYsLOKduBb4zQ==
 
 init:
-- appveyor version
-
-#assembly_info:
-#  patch: true
-#  file: '**\AssemblyInfo.*'
-#  assembly_version: '{version}'
-#  assembly_file_version: '{version}'
-#  assembly_informational_version: '{version}'
+- node --version
+- npm --version
 
 before_build:
-- npm install -g gulp-cli
 - npm install
+- dotnet restore
 
 build_script:
-- gulp build
+- node_modules\.bin\webpack --config webpack.config.prod.js
+- dotnet build --configuration Release --version-suffix %APPVEYOR_BUILD_NUMBER%
 
 after_build:
-- dotnet publish --output publish --configuration Release
+- dotnet publish --output publish --no-build
 - '"C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe" -verb:sync -source:IisApp="%APPVEYOR_BUILD_FOLDER%\publish" -dest:IisApp=subtitleevaluation,ComputerName=https://subtitleevaluation.scm.azurewebsites.net/msdeploy.axd,UserName=$SubtitleEvaluation,Password="%deployment_password%",AuthType=Basic -retryAttempts:2'
 
 test: off

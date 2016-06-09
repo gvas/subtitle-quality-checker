@@ -1,11 +1,11 @@
 {
   "name": "subtitle-evaluation",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Quality checker for subtitles.",
   "homepage": "https://subtitleevaluation.azurewebsites.net",
   "scripts": {
-    "build": "gulp build",
-    "dev": "gulp dev",
+    "build": "webpack --config webpack.config.prod.js && dotnet restore && dotnet build --configuration Release",
+    "watch": "webpack --config webpack.config.dev.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -37,9 +37,6 @@
     "eslint-loader": "^1.3.0",
     "eslint-plugin-react": "^5.1.1",
     "file-loader": "^0.8.5",
-    "gulp": "^3.9.0",
-    "gulp-shell": "^0.5.2",
-    "gulp-util": "^3.0.7",
     "history": "^2.1.2",
     "js-cookie": "^2.1.1",
     "material-ui": "^0.15.0",

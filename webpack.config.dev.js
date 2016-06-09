@@ -1,6 +1,5 @@
 ﻿/*eslint-env node */
 var path = require('path');
-var webpack = require('webpack');
 var BellOnBundlerErrorPlugin = require('bell-on-bundler-error-plugin');
 
 module.exports = {
@@ -9,21 +8,6 @@ module.exports = {
   entry: {
     'server': ['babel-polyfill', './server'],
     'client': ['babel-polyfill', './client'],
-    'vendors': [
-      'material-ui/AppBar',
-      'material-ui/Drawer',
-      'material-ui/List',
-      'material-ui/styles/themeManager',
-      'react',
-      'react-dom',
-      'react-dropzone',
-      'react-redux',
-      'react-router',
-      'react-router-redux',
-      'react-tap-event-plugin',
-      'redux',
-      'redux-responsive',
-    ],
   },
 
   output: {
@@ -37,18 +21,20 @@ module.exports = {
   },
 
   module: {
-    /*
-    preloaders: [
-      { test: /\.js$/, loader: 'eslint-loader', exclude: /node_modules/ }
-    ],
-    */
-    loaders: [
-      // JavaScript, JSX
+    preLoaders: [
+      // linting
       {
-        // transform JavaScript files via Babel
+        loader: 'eslint-loader',
+        test: /\.js$/,
+        exclude: /node_modules/,
+      },
+    ],
+    loaders: [
+      // javascript transpilation
+      {
         loader: 'babel',
 
-        test: /\.jsx?$/,
+        test: /\.js$/,
 
         // skip any files outside of the project's Content directory
         include: [
@@ -63,15 +49,6 @@ module.exports = {
 
           presets: ['es2015', 'stage-0', 'react'],
         },
-      },
-
-      // linting
-      {
-        loader: 'eslint-loader',
-
-        test: /\.js$/,
-
-        exclude: /node_modules/,
       },
 
       // SASS
@@ -90,35 +67,14 @@ module.exports = {
   },
 
   resolve: {
-    // allow require('./blah') to require blah.jsx
-    extensions: ['', '.js', '.jsx'],
+    // allow require('./blah') to require blah.js
+    extensions: ['', '.js'],
   },
 
   plugins: [
     // beep on errors
     new BellOnBundlerErrorPlugin(),
-
-    // optimize react in production build
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production'),
-      },
-    }),
-
-    // minimize the bundles
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-      },
-    }),
-
-    // split the client code into vendor and application
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendors',
-      chunks: ['client', 'vendors'],
-      minChunks: Infinity,
-    }),
   ],
 
-  watch: false,
+  watch: true,
 };
