@@ -9,11 +9,10 @@ environment:
   deployment_password:
     secure: i2xNSnZMjUY1cb6okh+wAKuE1Mq5QTT/soEB5fDHbQQ/kECcB8B5c9GAkQLh9x7Ua4PKEib0zeYsLOKduBb4zQ==
 
-init:
+before_build:
+- ps: Install-Product node $env:nodejs_version
 - node --version
 - npm --version
-
-before_build:
 - npm install
 - dotnet restore
 
