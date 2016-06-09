@@ -21,7 +21,7 @@ build_script:
 - dotnet build --configuration Release --version-suffix %APPVEYOR_BUILD_NUMBER%
 
 after_build:
-- dotnet publish --output publish --no-build
+- dotnet publish --configuration Release --output publish --no-build
 - '"C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe" -verb:sync -source:IisApp="%APPVEYOR_BUILD_FOLDER%\publish" -dest:IisApp=subtitleevaluation,ComputerName=https://subtitleevaluation.scm.azurewebsites.net/msdeploy.axd,UserName=$SubtitleEvaluation,Password="%deployment_password%",AuthType=Basic -retryAttempts:2'
 
 test: off
