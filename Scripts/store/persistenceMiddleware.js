@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie'
-import { types as actionTypes, restoreValue } from '../actions/index'
+import actionTypes from '../constants/actionTypes'
+import { restoreValue } from '../actions/index'
 
 const COOKIE_NAME = 'settings'
 

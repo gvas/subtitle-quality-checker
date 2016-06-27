@@ -28,8 +28,9 @@ export default class NumericalSettingEditor extends React.Component {
     label: PropTypes.string.isRequired,
     errorText: PropTypes.string,
     isOpen: PropTypes.bool.isRequired,
+    settings: PropTypes.object.isRequired,
+    tables: PropTypes.array.isRequired,
     value: PropTypes.string.isRequired,
-    validationFn: PropTypes.func.isRequired,
     changeSetting: PropTypes.func.isRequired,
     rollbackSetting: PropTypes.func.isRequired,
     submitSetting: PropTypes.func.isRequired,
@@ -44,12 +45,12 @@ export default class NumericalSettingEditor extends React.Component {
   }
 
   onSubmit = () => {
-    this.props.submitSetting(this.props.name, this.props.value, this.props.validationFn)
+    this.props.submitSetting(this.props.name, this.props.value, this.props.settings, this.props.tables)
   }
 
   onKeyDown = event => {
     if (event.keyCode === 13) {
-      this.props.submitSetting(this.props.name, this.props.value, this.props.validationFn)
+      this.props.submitSetting(this.props.name, this.props.value, this.props.settings, this.props.tables)
     }
   }
 

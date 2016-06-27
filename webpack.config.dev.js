@@ -8,6 +8,7 @@ module.exports = {
   entry: {
     'server': ['babel-polyfill', './server'],
     'client': ['babel-polyfill', './client'],
+    'worker': ['./worker'],
   },
 
   output: {
@@ -44,7 +45,7 @@ module.exports = {
         query: {
           plugins: [
             // replace babel's repeated helper functions with calls to the babel-runtime package
-            'transform-runtime',
+            //'transform-runtime',
           ],
 
           presets: ['es2015', 'stage-0', 'react'],

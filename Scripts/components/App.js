@@ -1,6 +1,7 @@
 ﻿import React, { PropTypes } from 'react'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
+import Snackbar from 'material-ui/Snackbar'
 import AppBarContainer from '../containers/AppBarContainer'
 import ResponsiveNavigationDrawer from '../containers/ResponsiveNavigationDrawer'
 
@@ -36,6 +37,9 @@ export default class App extends React.Component {
       pathname: PropTypes.string.isRequired,
     }).isRequired,
     children: PropTypes.node.isRequired,
+    snack: PropTypes.string,
+    isSnackVisible: PropTypes.bool.isRequired,
+    deleteSnack: PropTypes.func.isRequired,
   }
 
   static contextTypes = {
@@ -71,10 +75,14 @@ export default class App extends React.Component {
           <ResponsiveNavigationDrawer location={this.props.location} />
           <div style={contentContainerStyle}>
             <div style={contentStyle}>
-              {this.props.children}
+              { this.props.children }
             </div>
           </div>
         </div>
+        <Snackbar open={this.props.isSnackVisible}
+          message={this.props.snack}
+          autoHideDuration={4000}
+          onRequestClose={this.props.deleteSnack} />
       </div>
     )
   }

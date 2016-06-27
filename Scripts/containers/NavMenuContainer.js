@@ -6,6 +6,7 @@ import { getTranslations } from '../selectors/index'
 
 const mapStateToProps = (state, ownProps) => ({
   translations: getTranslations(state),
+  hasResults: state.subtitle.tables.length !== 0,
   location: ownProps.location,
 })
 

@@ -15,6 +15,7 @@ export default class NavMenu extends React.Component {
     translations: PropTypes.shape({
       translate: PropTypes.func.isRequired,
     }).isRequired,
+    hasResults: PropTypes.bool.isRequired,
     location: PropTypes.shape({
       pathname: PropTypes.string.isRequired,
     }).isRequired,
@@ -32,11 +33,11 @@ export default class NavMenu extends React.Component {
 
     return (
       <SelectableList value={this.props.location.pathname} onChange={this.onChange}>
-        <ListItem style={styles.listItem} primaryText={t.translate('app.navMenu.evaluation')}
-          value="/" />
-        <ListItem style={styles.listItem} primaryText={t.translate('app.navMenu.settings')}
+        <ListItem style={styles.listItem} primaryText={t.translate('app.navMenu.evaluation') }
+          value={this.props.hasResults ? "/results" : "/"} />
+        <ListItem style={styles.listItem} primaryText={t.translate('app.navMenu.settings') }
           value="/settings" />
-        <ListItem style={styles.listItem} primaryText={t.translate('app.navMenu.about')}
+        <ListItem style={styles.listItem} primaryText={t.translate('app.navMenu.about') }
           value="/about" />
       </SelectableList>
     )

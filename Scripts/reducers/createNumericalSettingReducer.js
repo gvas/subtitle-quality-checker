@@ -1,5 +1,5 @@
 /*eslint-env node, browser*/
-import { types } from '../actions/index'
+import types from '../constants/actionTypes'
 
 /**
  * Creates a reducer function for a numerical setting.

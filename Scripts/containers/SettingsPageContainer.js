@@ -3,7 +3,6 @@ import { openSettingEditor } from '../actions/index'
 import SettingsPage from '../components/SettingsPage'
 import { getTranslations } from '../selectors/index'
 import locales from '../constants/locales'
-import encodings from '../constants/encodings'
 
 const mapStateToProps = (state) => {
   const t = getTranslations(state)
@@ -23,10 +22,6 @@ const mapStateToProps = (state) => {
     locales: locales.map(locale => ({
       label: t.translate(locale, { scope: 'app.locales' }),
       value: locale,
-    })),
-    encodings: encodings.map(encoding => ({
-      label: t.translate(encoding, { scope: 'app.encodings' }),
-      value: encoding,
     })),
   }
 }

@@ -4,6 +4,7 @@ import {Card} from 'material-ui/Card'
 import {List, ListItem} from 'material-ui/List'
 import NumericalSettingEditorContainer from '../containers/NumericalSettingEditorContainer'
 import SelectSettingEditorContainer from '../containers/SelectSettingEditorContainer'
+import EncodingEditorContainer from '../containers/EncodingEditorContainer'
 
 const styles = {
   card: {
@@ -36,10 +37,6 @@ export default class SettingsPage extends React.Component {
     maxCps: PropTypes.number.isRequired,
     minPauseMs: PropTypes.number.isRequired,
     locales: PropTypes.arrayOf(PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired,
-    })).isRequired,
-    encodings: PropTypes.arrayOf(PropTypes.shape({
       label: PropTypes.string.isRequired,
       value: PropTypes.string.isRequired,
     })).isRequired,
@@ -118,7 +115,7 @@ export default class SettingsPage extends React.Component {
             />
         </List>
         <SelectSettingEditorContainer name="locale" choices={this.props.locales} />
-        <SelectSettingEditorContainer name="encoding" choices={this.props.encodings} />
+        <EncodingEditorContainer />
         <NumericalSettingEditorContainer name="maxRowCount" />
         <NumericalSettingEditorContainer name="maxCharCount" />
         <NumericalSettingEditorContainer name="minDurationMs" />

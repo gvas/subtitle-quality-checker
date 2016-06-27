@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { changeSetting, rollbackSetting, submitSetting } from '../actions/index'
+import { changeSetting, rollbackSetting, submitSetting, evaluateTablesAsync } from '../actions/index'
 import NumericalSettingEditor from '../components/NumericalSettingEditor'
 import { getTranslations } from '../selectors/index'
 import validationErrorTypes from '../constants/validationErrorTypes'
@@ -17,6 +17,15 @@ const validate = value => {
   return null
 }
 
+const submitEvaluationSetting = (name, value, settings, tables) =>
+  dispatch => {
+    dispatch(submitSetting(name, value, validate))
+    const modifiedSettings = Object.assign({}, settings, {
+      [name]: value,
+    })
+    dispatch(evaluateTablesAsync(modifiedSettings, tables))
+  }
+
 const mapStateToProps = (state, ownProps) => {
   const t = getTranslations(state)
   const setting = state.settings[ownProps.name]
@@ -26,15 +35,26 @@ const mapStateToProps = (state, ownProps) => {
     label: t.translate(ownProps.name, { scope: 'app.settingsPage' }),
     errorText: setting.validationError === null ? null : t.translate(setting.validationError, { scope: 'app.validationErrors' }),
     isOpen: setting.isEdited,
+    settings: {
+      maxRowLength: state.settings.maxRowLength.value,
+      maxRowCount: state.settings.maxRowCount.value,
+      maxCharCount: state.settings.maxCharCount.value,
+      maxDurationMs: state.settings.maxDurationMs.value,
+      maxPauseMs: state.settings.maxPauseMs.value,
+      minCps: state.settings.minCps.value,
+      maxCps: state.settings.maxCps.value,
+      minPauseMs: state.settings.minPauseMs.value,
+      minDurationMs: state.settings.minDurationMs.value,
+    },
+    tables: state.subtitle.tables,
     value: setting.editedValue,
-    validationFn: validate,
   }
 }
 
 const mapDispatchToProps = {
   changeSetting,
   rollbackSetting,
-  submitSetting,
+  submitSetting: submitEvaluationSetting,
 }
 
 const NumericalSettingEditorContainer = connect(

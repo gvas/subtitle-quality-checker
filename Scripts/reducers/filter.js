@@ -1,4 +1,4 @@
-import { types } from '../actions/index'
+import types from '../constants/actionTypes'
 
 const initialState = null
 

@@ -50,12 +50,12 @@ export default class SelectSettingEditor extends React.Component {
 
     const actions = [
       <FlatButton
-        label={t.translate('app.selectSettingEditor.cancel')}
+        label={t.translate('app.selectSettingEditor.cancel') }
         secondary={true}
         onTouchTap={this.onRollback}
         />,
       <FlatButton
-        label={t.translate('app.selectSettingEditor.ok')}
+        label={t.translate('app.selectSettingEditor.ok') }
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.onSubmit}

@@ -4,7 +4,7 @@ import { openNavigationDrawer, closeNavigationDrawer } from '../actions/index'
 
 const mapStateToProps = (state, ownProps) => ({
   isDocked: state.browser.greaterThan.medium,
-  isOpen: state.browser.greaterThan.medium || state.appSpecific.isNavDrawerOpen,
+  isOpen: state.browser.greaterThan.medium || state.global.isNavDrawerOpen,
   location: ownProps.location,
 })
 

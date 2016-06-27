@@ -25,19 +25,19 @@ class FloatingActionButtonMenu extends React.Component {
 
   static propTypes = {
     file: PropTypes.object,
-    encoding: PropTypes.string.isRequired,
-    readSubtitleAsync: PropTypes.func.isRequired,
+    settings: PropTypes.object.isRequired,
+    readAndParseAndEvaluate: PropTypes.func.isRequired,
     router: PropTypes.object.isRequired,
   }
 
   onLoad = (event) => {
     event.preventDefault()
     const file = event.target.files[0]
-    this.props.readSubtitleAsync(file, this.props.encoding)
+    this.props.readAndParseAndEvaluate(file, this.props.settings)
   }
 
   onReload = () => {
-    this.props.readSubtitleAsync(this.props.file, this.props.encoding)
+    this.props.readAndParseAndEvaluate(this.props.file, this.props.settings)
   }
 
   render() {
