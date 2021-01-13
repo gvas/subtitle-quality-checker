@@ -1,4 +1,4 @@
-Quality checker for subtitles. Should be used as a complimentary tool with a full-fledged subtitle editor, e.g. [Subtitle Workshop](http://subworkshop.sourceforge.net/)
+Quality checker for subtitles. Should be used as a complementary tool with a full-fledged subtitle editor, e.g. [Subtitle Workshop](http://subworkshop.sourceforge.net/)
 
 Requirements
 ------------
